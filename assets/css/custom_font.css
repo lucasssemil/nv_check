@@ -1,0 +1,46 @@
+/* fallback */
+@font-face {
+  font-family: 'Play-Regular';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Play-Regular.ttf') format('truetype');
+}
+
+.play-reg {
+  font-family: 'Play-Regular';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+  font-family: 'Play-Bold';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/Play-Bold.ttf') format('truetype');
+}
+
+.play-bold {
+  font-family: 'Play-Bold';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -moz-font-feature-settings: 'liga';
+  -moz-osx-font-smoothing: grayscale;
+}
