@@ -26,9 +26,14 @@ class checker_model extends CI_Model
         $this->db->where('status',0);
     }
     
-    public function update_status($stat)
+    public function update_status($kodetrans,$stat)
     {
-        
+        $data = array(
+        'status' => $stat
+        );
+
+        $this->db->where('kodetrans', $kodetrans);
+        $this->db->update('t_orderchecker', $data);
     }
 	
 	

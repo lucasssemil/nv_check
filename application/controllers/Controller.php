@@ -22,6 +22,7 @@ class Controller extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('checker_model');
+        $this->load->helper('array');
 	}
 	
 	public function index()
@@ -64,6 +65,32 @@ class Controller extends CI_Controller {
         //$json = json_decode($data, true);
         //echo ($json['kodetrans']);
 	}
+    
+    public function update_status($hasil)
+    {
+       // $data = explode("/",$this->input->post('hasil'));//data[0]=finish/unfinish, data[1]=kodetransaksi
+        
+        $data = explode(".",$hasil);
+        for($i=0;$i<count($data);$i++)
+        {
+            $h = explode("_",$data[$i]);//$h[0]=f/u,h[1]=kodetrans
+            if($h[0]=="f")
+            {
+                $this->checker_model->update_status($h[1],'1');
+            }
+            else
+            {
+                $this->checker_model->update_status($h[1],'0');
+            }
+            
+        }
+        
+        echo json_encode($data);
+        
+        
+       
+        
+    }
     
     public function get_menu($nomeja)
     {

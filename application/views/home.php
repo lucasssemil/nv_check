@@ -413,17 +413,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</ul>
 		</div>
 		<div id="testmodal2" class="col m12" style="margin: 0px; padding:0px;">
-			<ul class="collection white font_cardlist scrollable_list" style="">
-				<li class="collection-item">ORANGE JUICE</li>
-				<li class="collection-item">ORANGE JUICE</li>
-				<li class="collection-item">ORANGE JUICE</li>
-				<li class="collection-item">KAKIGORI</li>
-				<li class="collection-item">KAKIGORI</li>
+			<ul id ="listmodal2" class="collection white font_cardlist scrollable_list" style="">
 			</ul>
 		</div>
 	</div>
-	<div class="modal-footer">
-		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+	<div class="modal-footer"> 
+		<button id="submitmodal" class="modal-action modal-close waves-effect waves-green btn waves-effect waves-light ">Submit</button>
 	</div>
 </div>
 
@@ -542,7 +537,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
     }
-    
+    var totaldatamodal=0;
 	function reloaddata1(){
 		//alert('a1');
 		$.ajax({
@@ -597,7 +592,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 	$('.modal').modal();
     $(document).on("click", ".meja", function () {
-            var myElements = $(this).attr('name');//dapetin nomor meja
+        var myElements = $(this).attr('name');//dapetin nomor meja
         $.ajax({
 			type:"GET", 
 			dataType: 'json',
@@ -606,9 +601,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			success :function(result){
                 document.getElementById("m_nomeja").innerHTML = "TABLE : "+result[0]['NOMORMEJA'];
                 $('#listmodal').empty();
+                $('#listmodal2').empty();
+                totaldatamodal=result.length;
                 for(i=0;i<result.length;i++)
                 {
-                    $('#listmodal').append('<li class="collection-item "><div class="col m9  ">'+result[i]['NAMAMENURECIPE']+'</div><div class="col m2"></div><div class="progress "><div class="determinate " style="width:0%"></div></div></li>');       
+                    var str="";
+                    if(result[i]["STATUS"]!=1)
+                    {
+                        str = '<li class="collection-item ">'
+                                +'<div class="row">'
+                                    +'<div class="col s8">'+result[i]['NAMAMENURECIPE']+'</div>'
+                                    +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb'+i+'" name="f_'+result[i]['KODETRANS']+'" /><label for="cb'+i+'">Finish</label></div>'
+                                +'</div>'
+                                +'<div class="col m2"></div>'
+                                +'<div class="progress "><div class="determinate " style="width:0%"></div></div>'
+                            +'</li>'; 
+                        $('#listmodal').append(str);
+                    }
+                    else
+                    {
+                         str = '<li class="collection-item ">'
+                                +'<div class="row">'
+                                    +'<div class="col s8">'+result[i]['NAMAMENURECIPE']+'</div>'
+                                    +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb'+i+'" name="u_'+result[i]['KODETRANS']+'"/><label for="cb'+i+'">Unfinish</label></div>'
+                                +'</div>'
+                                +'<div class="col m2"></div>'
+                                +'<div class="progress "><div class="determinate " style="width:0%"></div></div>'
+                            +'</li>'; 
+                        $('#listmodal2').append(str);
+                    }
                 }
                 
 			}, error: function(msg){
@@ -616,6 +637,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
     });
+         
+   $("#submitmodal").click(function(){
+       
+        var hasil="";
+        for(i=0;i<totaldatamodal;i++)
+        {
+            if($('#cb'+i).is(':checked')==true)
+            {      
+                hasil = hasil + $('#cb'+i).attr('name')+".";
+                
+            }
+        }
+       hasil = hasil.substring(0,hasil.length-1);
+        alert(hasil);
+        $.ajax({
+			type:"post", 
+            dataType:"json",
+			url: "<?php echo site_url(); ?>" + "/Controller/update_status/"+hasil, 
+			data:{ "mode":"resep" },                                     
+			success :function(result){
+                alert(result);
+            }, error: function(msg){
+                alert('Submit Modal Error');
+            }
+        });
+   });
          
 	$('ul.tabs').tabs({
 		swipeable : false
