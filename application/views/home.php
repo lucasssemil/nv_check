@@ -443,7 +443,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	Server.bind('message', function( payload ) {
 		switch (payload) {
 			case 'grid':
-				reloaddata1();
+				reloadalldata();
 				break;
 		}
 	});
@@ -454,8 +454,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $.ajax({
 			type:"GET", 
 			dataType: 'json',
-			url: "<?php echo site_url(); ?>" + "/Controller/get_table", 
-			data:{ "mode":"resep" },                                     
+			url: "<?php echo site_url(); ?>" + "/Controller/get_allprogress", 
+			data:{},                                     
 			success :function(result){
 				var month = new Array();
                 month[0] = "Jan";
@@ -474,62 +474,65 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 now = new Date().getTime();
                 
                 var ctr=1;
-                var tmp=result[0]['nomormeja'];
-                
-                for(i=0;i<result.length;i++)
+                if(result!=null)
                 {
-                    if(tmp!=result[i]['nomormeja'])
+                    var tmp=result[0]['nomormeja'];
+
+                    for(i=0;i<result.length;i++)
                     {
-                        ctr=1;
-                        tmp=result[i]['nomormeja'];
-                    }
-                    
-                    var date = result[i]['tanggalomset'].split("-");
-                    e = parseInt(date[1]);
-                   var d = month[e-1]+" "+date[2]+", "+date[0];
-                
-                    //alert(d);
-                    
-                    var testing = result[i]['jamtarget'].toString();
-                    var test2 = d+" "+testing;
-                    //alert(test2);
-                    //test2 = "MAR 13, 2018 11:18:34";
-                    var jamtarget = new Date(test2).getTime();
-                    //alert(jamtarget-now);
-                    var durasi = jamtarget-now;
-                    
-                    var proses = (now-jamtarget)*(-1);
-                    //alert(proses);
-                    var temp = Math.floor((proses % (1000 * 60 * 60)) / (1000 * 60));
-                    //alert(Math.floor(proses % (1000 * 60)/1000));
-                    proses = Math.floor(proses % (1000 * 60)/1000)  + (temp*60);
-                    var perdetik = 100/(result[i]['durasi']*60);//progressbar berjalan perdetik
-                    //alert("AWAL : "+i+": "+proses);
-                    var warnabar = "greenteal";
-                    
-                    if(proses*perdetik<=0)
-                    {
-                        proses=100;
-                        durasi=0;
-                        warnabar="red";
-                    }
-                    else
-                    {
-                        proses = proses*perdetik;        
-                        if(proses<=50)
+                        if(tmp!=result[i]['nomormeja'])
                         {
-                            warnabar="yellow";
+                            ctr=1;
+                            tmp=result[i]['nomormeja'];
                         }
+
+                        var date = result[i]['tanggalomset'].split("-");
+                        e = parseInt(date[1]);
+                       var d = month[e-1]+" "+date[2]+", "+date[0];
+
+                        //alert(d);
+
+                        var testing = result[i]['jamtarget'].toString();
+                        var test2 = d+" "+testing;
+                        //alert(test2);
+                        //test2 = "MAR 13, 2018 11:18:34";
+                        var jamtarget = new Date(test2).getTime();
+                        //alert(jamtarget-now);
+                        var durasi = jamtarget-now;
+
+                        var proses = (now-jamtarget)*(-1);
+                        //alert(proses);
+                        var temp = Math.floor((proses % (1000 * 60 * 60)) / (1000 * 60));
+                        //alert(Math.floor(proses % (1000 * 60)/1000));
+                        proses = Math.floor(proses % (1000 * 60)/1000)  + (temp*60);
+                        var perdetik = 100/(result[i]['durasi']*60);//progressbar berjalan perdetik
+                        //alert("AWAL : "+i+": "+proses);
+                        var warnabar = "greenteal";
+
+                        if(proses*perdetik<=0)
+                        {
+                            proses=100;
+                            durasi=0;
+                            warnabar="red";
+                        }
+                        else
+                        {
+                            proses = proses*perdetik;        
+                            if(proses<=50)
+                            {
+                                warnabar="yellow";
+                            }
+                        }
+                        var m = Math.floor((durasi % (1000 * 60 * 60)) / (1000 * 60));
+                        var s = Math.floor((durasi % (1000 * 60)) /1000);
+
+                        document.getElementById("pB"+result[i]['nomormeja']+ctr).style.width = proses+"%";
+                        document.getElementById("pB"+result[i]['nomormeja']+ctr).style.backgroundColor = warnabar;
+                        document.getElementById("countdown"+result[i]['nomormeja']+ctr).innerHTML = m+":"+s;
+
+                        ctr=ctr+1;
+                       // alert(ctr);
                     }
-                    var m = Math.floor((durasi % (1000 * 60 * 60)) / (1000 * 60));
-                    var s = Math.floor((durasi % (1000 * 60)) /1000);
-                    
-                    document.getElementById("pB"+result[i]['nomormeja']+ctr).style.width = proses+"%";
-                    document.getElementById("pB"+result[i]['nomormeja']+ctr).style.backgroundColor = warnabar;
-                    document.getElementById("countdown"+result[i]['nomormeja']+ctr).innerHTML = m+":"+s;
-                    
-                    ctr=ctr+1;
-                   // alert(ctr);
                 }
                 
 			}, error: function(msg){
@@ -537,13 +540,66 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
     }
+    
     var totaldatamodal=0;
-	function reloaddata1(){
+    
+    function reloaddata(nomeja)
+    {
+      $.ajax({
+			type:"GET", 
+			dataType: 'json',
+			url: "<?php echo site_url(); ?>" + "/Controller/get_progress/"+nomeja, 
+			data:{},                                     
+			success :function(result){
+				//$('#container').html(JSON.stringify(result));
+                //$('#test'+result[0]['nomormeja']+'1').html(JSON.stringify(result));
+                //alert(totmeja);
+                for(i=0;i<result.length;i++){
+                    $('#list'+result[i]['nomormeja']+'1').empty();
+                }
+             
+                var tmp =0;
+                var ctr=1;
+                
+                for(i=0;i<result.length;i++)
+                {
+                    if(tmp!=result[i]['nomormeja'])
+                    {
+                        document.getElementById("hjam"+ctr).innerHTML = result[i]['jamorder'];
+                        tmp=result[i]['nomormeja'];  
+                        ctr = ctr+1;
+                    }
+                }
+                
+                //untuk inisiasi variabel progressbar dan countdown
+                ctr=1;
+                tmp=result[0]['nomormeja'];
+                
+                for(i=0;i<result.length;i++){
+                    
+                    if(tmp!=result[i]['nomormeja'])
+                    {
+                        ctr=1;
+                        tmp=result[i]['nomormeja'];
+                    }
+                    
+                    //mengeluarkan list pesanan
+                    $('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9  ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'" class="determinate " style="width:0%"></div></div></li>');
+                    
+                    ctr = ctr+1;
+                }
+			}, error: function(msg){
+				alert('Reload Data Error');
+			}
+		});
+    }
+    
+	function reloadalldata(){
 		//alert('a1');
 		$.ajax({
 			type:"GET", 
 			dataType: 'json',
-			url: "<?php echo site_url(); ?>" + "/Controller/get_table", 
+			url: "<?php echo site_url(); ?>" + "/Controller/get_allprogress", 
 			data:{ "mode":"resep" },                                     
 			success :function(result){
 				//$('#container').html(JSON.stringify(result));
@@ -588,11 +644,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	}
+    
 	 $(document).ready(function(){
 	// // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 	$('.modal').modal();
+    var myElements;
     $(document).on("click", ".meja", function () {
-        var myElements = $(this).attr('name');//dapetin nomor meja
+        myElements = $(this).attr('name');//dapetin nomor meja
         $.ajax({
 			type:"GET", 
 			dataType: 'json',
@@ -657,7 +715,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			url: "<?php echo site_url(); ?>" + "/Controller/update_status/"+hasil, 
 			data:{ "mode":"resep" },                                     
 			success :function(result){
-                alert(result);
+                reloaddata(myElements);  
             }, error: function(msg){
                 alert('Submit Modal Error');
             }
@@ -668,7 +726,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		swipeable : false
 	});
          
-		reloaddata1();
+		reloadalldata();
 	// //$('ul.tabs').tabs('select_tab', 'tab_id');
  });
 </script>

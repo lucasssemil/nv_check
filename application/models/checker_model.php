@@ -20,10 +20,20 @@ class checker_model extends CI_Model
         return $query->result_array();
     }
     
-    public function get_progress(){
-        $this->db->select("*");
-        $this->db->from("t_orderchecker");
-        $this->db->where('status',0);
+    public function get_progress($nomeja)
+    {
+        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget");
+        $this->db->where('status','0');
+        $this->db->where('nomormeja',$nomeja);
+        $this->db->order_by("nomormeja, namamenurecipe");
+		return $this->db->get("t_orderchecker")->result_array();
+    }
+    
+    public function get_allprogress(){
+        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget");
+        $this->db->where('status','0');
+        $this->db->order_by("nomormeja, namamenurecipe");
+		return $this->db->get("t_orderchecker")->result_array();
     }
     
     public function update_status($kodetrans,$stat)
