@@ -66,6 +66,17 @@ class Controller extends CI_Controller {
         //echo ($json['kodetrans']);
 	}
     
+    public function get_allprogress()
+    {
+        $data = $this->checker_model->get_allprogress();
+        echo json_encode($data);
+    }
+    
+    public function get_progress($nomeja)
+    {
+        $data = $this->checker_model->get_progress($nomeja);
+        echo json_encode($data);
+    }
     public function update_status($hasil)
     {
        // $data = explode("/",$this->input->post('hasil'));//data[0]=finish/unfinish, data[1]=kodetransaksi
