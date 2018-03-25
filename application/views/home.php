@@ -37,6 +37,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             src: url(<?php echo base_url('assets/fonts/digital-7.ttf'); ?>);
         }
 		
+        .strikeout {
+            line-height: 1em;
+            position: relative;
+        }
+        .strikeout::after {
+          border-bottom: 0.125em solid black;
+          content: "";
+          left: 0;
+          margin-top: calc(0.125em / 2 * -1);
+          position: absolute;
+          right: 50%;
+          top: 50%;
+        }
 	</style>
 	
 </head>
@@ -111,22 +124,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</ul>
 						</div>
 						<div id="test12" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection white font_cardlist scrollable_list" style="">
-								<li class="collection-item">ORANGE JUICE</li>
-								<li class="collection-item">ORANGE JUICE</li>
-								<li class="collection-item">ORANGE JUICE</li>
-								<li class="collection-item">KAKIGORI</li>
-								<li class="collection-item">KAKIGORI</li>
+							<ul id='list12' class="collection white font_cardlist scrollable_list">
 							</ul>
 						</div>
 						<div id="test13" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection white font_cardlist scrollable_list" style="">
-								<li class="collection-item">2 CHIC TRYK BENTO</li>
-								<li class="collection-item">1 CHAWAN MUSHI</li>
-								<li class="collection-item">1 EBI MAYO BENTO</li>
-								<li class="collection-item">4 SENCA DINGIN</li>
-								<li class="collection-item">3 ORANGE JUICE</li>
-								<li class="collection-item">2 KAKIGORI</li>
+							<ul id='list13' class="collection white font_cardlist scrollable_list">
 							</ul>
 						</div>
 						
@@ -154,12 +156,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</ul>
 						</div>
 						<div id="test22" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
+							<ul id='list22' class="collection font_cardlist scrollable_list">
 								<li class="collection-item"> ORANGE JUICE</li>
 							</ul>
 						</div>
 						<div id="test23" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
+							<ul id='list23' class="collection font_cardlist scrollable_list">
 								<li class="collection-item">2 CHIC TRYK BENTO</li>
 								<li class="collection-item">1 CHAWAN MUSHI</li>
 							</ul>
@@ -188,12 +190,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</ul>
 						</div>
 						<div id="test32" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
+							<ul id='list32' class="collection font_cardlist scrollable_list">
 								<li class="collection-item"> ORANGE JUICE</li>
 							</ul>
 						</div>
 						<div id="test33" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
+							<ul id='list33' class="collection font_cardlist scrollable_list">
 								<li class="collection-item">2 CHIC TRYK BENTO</li>
 								<li class="collection-item">1 CHAWAN MUSHI</li>
 							</ul>
@@ -223,12 +225,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</ul>
 						</div>
 						<div id="test42" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
+							<ul id='list42'  class="collection font_cardlist scrollable_list">
 								<li class="collection-item"> ORANGE JUICE</li>
 							</ul>
 						</div>
 						<div id="test43" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
+							<ul id='list43' class="collection font_cardlist scrollable_list">
 								<li class="collection-item">2 CHIC TRYK BENTO</li>
 								<li class="collection-item">1 CHAWAN MUSHI</li>
 							</ul>
@@ -413,12 +415,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</ul>
 		</div>
 		<div id="testmodal2" class="col m12" style="margin: 0px; padding:0px;">
-			<ul id ="listmodal2" class="collection white font_cardlist scrollable_list" style="">
+			<ul class="collection white font_cardlist scrollable_list" style="">
+				<li class="collection-item">ORANGE JUICE</li>
+				<li class="collection-item">ORANGE JUICE</li>
+				<li class="collection-item">ORANGE JUICE</li>
+				<li class="collection-item">KAKIGORI</li>
+				<li class="collection-item">KAKIGORI</li>
 			</ul>
 		</div>
 	</div>
-	<div class="modal-footer"> 
-		<button id="submitmodal" class="modal-action modal-close waves-effect waves-green btn waves-effect waves-light ">Submit</button>
+	<div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
 	</div>
 </div>
 
@@ -472,7 +479,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 month[11] = "Dec";
                 //alert(d);
                 now = new Date().getTime();
-                
+                var warnabar="";
                 var ctr=1;
                 var tmp=result[0]['nomormeja'];
                 
@@ -505,7 +512,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     proses = Math.floor(proses % (1000 * 60)/1000)  + (temp*60);
                     var perdetik = 100/(result[i]['durasi']*60);//progressbar berjalan perdetik
                     //alert("AWAL : "+i+": "+proses);
-                    var warnabar = "greenteal";
+                    warnabar = "greenteal";
                     
                     if(proses*perdetik<=0)
                     {
@@ -523,13 +530,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     }
                     var m = Math.floor((durasi % (1000 * 60 * 60)) / (1000 * 60));
                     var s = Math.floor((durasi % (1000 * 60)) /1000);
-                    
+                    if (result[i]['finish']==0){
+                   //alert(i+" "+ctr);
                     document.getElementById("pB"+result[i]['nomormeja']+ctr).style.width = proses+"%";
                     document.getElementById("pB"+result[i]['nomormeja']+ctr).style.backgroundColor = warnabar;
                     document.getElementById("countdown"+result[i]['nomormeja']+ctr).innerHTML = m+":"+s;
                     
                     ctr=ctr+1;
-                   // alert(ctr);
+                    }
                 }
                 
 			}, error: function(msg){
@@ -537,7 +545,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
     }
-    var totaldatamodal=0;
+    
 	function reloaddata1(){
 		//alert('a1');
 		$.ajax({
@@ -551,6 +559,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 //alert(totmeja);
                 for(i=0;i<result.length;i++){
                     $('#list'+result[i]['nomormeja']+'1').empty();
+                    $('#list'+result[i]['nomormeja']+'3').empty();
+                    $('#list'+result[i]['nomormeja']+'2').empty();
                 }
              
                 var tmp =0;
@@ -577,11 +587,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         ctr=1;
                         tmp=result[i]['nomormeja'];
                     }
-                    
                     //mengeluarkan list pesanan
-                    $('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9  ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'" class="determinate " style="width:0%"></div></div></li>');
+                    //$('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9  ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'" class="determinate " style="width:0%"></div></div></li>');
+                    if(result[i]['finish']==1){
+                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="strikeout">'+result[i]['namamenurecipe']+'</div></li>');
+                        $('#test'+result[i]['nomormeja']+'2 ul').append('<li class="collection-item "><div class="strikeout">'+result[i]['namamenurecipe']+'</div></li>');
+                    }
+                    if (result[i]['finish']==0){
+                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item ">'+result[i]['namamenurecipe']+'</li>');
+                        
+                        $('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'" class="determinate " style="width:0%"></div></div></li>');
+                        ctr = ctr+1;
+                    }
                     
-                    ctr = ctr+1;
+                    //alert("meja"+tmp+"ctr"+ctr);    
                 }
 			}, error: function(msg){
 				alert('Reload Data Error');
@@ -591,7 +610,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	 $(document).ready(function(){
 	// // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 	$('.modal').modal();
-    $(document).on("click", ".meja", function () {
+       $(document).on("click", ".meja", function () {
         var myElements = $(this).attr('name');//dapetin nomor meja
         $.ajax({
 			type:"GET", 
@@ -658,6 +677,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			data:{ "mode":"resep" },                                     
 			success :function(result){
                 alert(result);
+                reloaddata1();
             }, error: function(msg){
                 alert('Submit Modal Error');
             }
