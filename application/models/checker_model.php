@@ -9,7 +9,7 @@ class checker_model extends CI_Model
 	}
 	
 	public function get_table(){
-		$this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget");
+		$this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status");
         $this->db->order_by("nomormeja, namamenurecipe");
 		return $this->db->get("t_orderchecker")->result_array();
 	}
@@ -22,15 +22,14 @@ class checker_model extends CI_Model
     
     public function get_progress($nomeja)
     {
-        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget");
-        $this->db->where('status','0');
+        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status");
         $this->db->where('nomormeja',$nomeja);
         $this->db->order_by("nomormeja, namamenurecipe");
 		return $this->db->get("t_orderchecker")->result_array();
     }
     
     public function get_allprogress(){
-        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget");
+        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status");
         $this->db->where('status','0');
         $this->db->order_by("nomormeja, namamenurecipe");
 		return $this->db->get("t_orderchecker")->result_array();
