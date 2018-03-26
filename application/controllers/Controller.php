@@ -66,6 +66,7 @@ class Controller extends CI_Controller {
         //echo ($json['kodetrans']);
 	}
     
+        
     public function get_allprogress()
     {
         $data = $this->checker_model->get_allprogress();
@@ -106,6 +107,12 @@ class Controller extends CI_Controller {
     public function get_menu($nomeja)
     {
         $data = $this->checker_model->get_menu($nomeja);
+        echo json_encode($data);
+    }
+    
+    public function get_multimeja($kodemenu)
+    {
+        $data = $this->checker_model->get_multimeja($kodemenu);
         echo json_encode($data);
     }
 }

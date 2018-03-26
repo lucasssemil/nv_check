@@ -406,10 +406,44 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 </div>
 
+<div id="modal2" class="modal modal-fixed-footer" style="width: 25%;">
+	<div class="modal-content">
+		<div class="row">
+			<div id="judulmenu" class="col m12 modal-trigger waves-effect waves-light" style="">
+                NAMA MENU
+			</div>
+		</div>
+		<div class="col m12" style="margin: 0px; padding:0px;">
+			<ul class="tabs tabs-fixed-width " style="">
+				<!--<div class="indicator grey" style="z-index:1"> </div>-->
+			</ul>
+		</div>
+		<div class="col m12" style="margin: 0px; padding:0px;">
+            <div class="row">
+                <div class="col s4">NOMOR MEJA</div>
+                <div class="col s4">JUMLAH PESANAN</div>
+                <div class="col s4">FINISH</div>
+            </div>
+        </div>
+        <div class="col m12" style="margin: 0px; padding:0px;">
+			<ul id="listmodal21" class="collection white font_cardlist scrollable_list" style="">
+				
+			</ul>
+		</div>
+	</div>
+	<div class="modal-footer">
+        <button id="submitmodal" class="modal-action modal-close waves-effect waves-green btn waves-effect waves-light">Submit</button>
+	</div>
+</div>    
+    
+    
 <script>
 
 	//Define websocket server
     var now,hours,minutes,seconds;
+    var ctr2=1;
+    var boolWindowModal=false;
+    var myElements;
     var x = setInterval(function(){
         now = new Date().getTime();
     
@@ -433,15 +467,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	});
 	Server.connect();
 	
-    function ProgressBarTick()
+    
+    function hitungDurasi(tanggalomset,jamtarget)
     {
-        $.ajax({
-			type:"GET", 
-			dataType: 'json',
-			url: "<?php echo site_url(); ?>" + "/Controller/get_allprogress", 
-			data:{ "mode":"resep" },                                     
-			success :function(result){
-				var month = new Array();
+        var month = new Array();
                 month[0] = "Jan";
                 month[1] = "Feb";
                 month[2] = "Mar";
@@ -456,6 +485,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 month[11] = "Dec";
                 //alert(d);
                 now = new Date().getTime();
+         var date = tanggalomset.split("-");
+                    e = parseInt(date[1]);
+                   var d = month[e-1]+" "+date[2]+", "+date[0];
+                
+                    //alert(d);
+                    
+                    var testing = jamtarget.toString();
+                    var test2 = d+" "+testing;
+                    //alert(test2);
+                    //test2 = "MAR 13, 2018 11:18:34";
+                    var jamtarget = new Date(test2).getTime();
+                    //alert(jamtarget-now);
+        var hasil = new Array();
+            hasil['durasi'] = jamtarget-now;
+                    
+            hasil['proses'] = (now-jamtarget)*(-1);
+        return hasil;
+    }
+    
+    function ProgressBarTick()
+    {
+        $.ajax({
+			type:"GET", 
+			dataType: 'json',
+			url: "<?php echo site_url(); ?>" + "/Controller/get_allprogress", 
+			data:{ "mode":"resep" },                                     
+			success :function(result){
+				
                 var warnabar="";
                 var ctr=1;
                 var tmp=result[0]['nomormeja'];
@@ -467,22 +524,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         ctr=1;
                         tmp=result[i]['nomormeja'];
                     }
-                    
-                    var date = result[i]['tanggalomset'].split("-");
-                    e = parseInt(date[1]);
-                   var d = month[e-1]+" "+date[2]+", "+date[0];
                 
-                    //alert(d);
+                    var hasil = hitungDurasi(result[i]['tanggalomset'],result[i]['jamtarget'])
+                    var durasi = hasil['durasi'];
+                    var proses = hasil['proses'];   
                     
-                    var testing = result[i]['jamtarget'].toString();
-                    var test2 = d+" "+testing;
-                    //alert(test2);
-                    //test2 = "MAR 13, 2018 11:18:34";
-                    var jamtarget = new Date(test2).getTime();
-                    //alert(jamtarget-now);
-                    var durasi = jamtarget-now;
-                    
-                    var proses = (now-jamtarget)*(-1);
+                   
                     //alert(proses);
                     var temp = Math.floor((proses % (1000 * 60 * 60)) / (1000 * 60));
                     //alert(Math.floor(proses % (1000 * 60)/1000));
@@ -513,6 +560,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     document.getElementById("pB"+result[i]['nomormeja']+ctr).style.backgroundColor = warnabar;
                     document.getElementById("countdown"+result[i]['nomormeja']+ctr).innerHTML = m+":"+s;
                     
+                    if(result[i]['nomormeja']==myElements)
+                    {
+                        document.getElementById("pBM"+myElements+ctr).style.width = proses+"%";
+                        document.getElementById("pBM"+myElements+ctr).style.backgroundColor = warnabar;
+                        document.getElementById("countdownM"+myElements+ctr).innerHTML = m+":"+s;
+                    }
+                        
                     ctr=ctr+1;
                     }
                 }
@@ -631,7 +685,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   
                     if (result[i]['status']==0){
                         $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item ">'+result[i]['namamenurecipe']+'</li>');
-                        $('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'" class="determinate " style="width:0%"></div></div></li>');
+                        $('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
                         ctr = ctr+1;
                     } 
                     if(result[i]['status']==1){
@@ -646,11 +700,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	}
+    
 	 $(document).ready(function(){
 	// // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-    var myElements;
 	$('.modal').modal();
+         
+        //modal 1
        $(document).on("click", ".meja", function () {
+        boolWindowModal=true;
         myElements = $(this).attr('name');//dapetin nomor meja
         $.ajax({
 			type:"GET", 
@@ -662,6 +719,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 $('#listmodal').empty();
                 $('#listmodal2').empty();
                 totaldatamodal=result.length;
+                ctr2=1;
                 for(i=0;i<result.length;i++)
                 {
                     var str="";
@@ -669,19 +727,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     {
                         str = '<li class="collection-item ">'
                                 +'<div class="row">'
-                                    +'<div class="col s8">'+result[i]['NAMAMENURECIPE']+'</div>'
+                                    +'<div class="col s4 menu modal-trigger waves-effe" name="'+result[i]['NAMAMENURECIPE']+"_"+result[i]['KODEMENURECIPE']+'" href="#modal2">'+result[i]['NAMAMENURECIPE']+'</div>'
+                                    +'<div id="countdownM'+myElements+ctr2+'" class="col s4">00:00</div>'
                                     +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb'+i+'" name="f_'+result[i]['KODETRANS']+'" /><label for="cb'+i+'">Finish</label></div>'
                                 +'</div>'
                                 +'<div class="col m2"></div>'
-                                +'<div class="progress"><div id="pB10" class="determinate " style="width:0%"></div></div>'
+                                +'<div class="progress"><div id="pBM'+myElements+ctr2+'" class="determinate" style="width:'+
+                    document.getElementById("pB"+myElements+ctr2).style.width+'"></div></div>'
                             +'</li>'; 
                         $('#listmodal').append(str);
+                        ctr2 = ctr2+1;
                     }
                     else
                     {
+                        var hasil = hitungDurasi(result[i]['TANGGALOMSET'],result[i]['JAMTARGET']);
+                        var m = Math.floor((hasil['durasi'] % (1000 * 60 * 60)) / (1000 * 60));
+                        var s = Math.floor((hasil['durasi'] % (1000 * 60)) /1000);
                          str = '<li class="collection-item ">'
                                 +'<div class="row">'
-                                    +'<div class="col s8">'+result[i]['NAMAMENURECIPE']+'</div>'
+                                    +'<div class="col s4">'+result[i]['NAMAMENURECIPE']+'</div>'
+                                    +'<div class="col s4">'+m+':'+s+'</div>'
                                     +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb'+i+'" name="u_'+result[i]['KODETRANS']+'"/><label for="cb'+i+'">Unfinish</label></div>'
                                 +'</div>'
                                 +'<div class="col m2"></div>'
@@ -697,15 +762,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
     });
          
-   $("#submitmodal").click(function(){
+    //modal 2
+    $(document).on("click", ".menu", function () {
        
+        var bantu = $(this).attr('name').split("_");
+        var judulmenu = bantu[0];//dapetin nama menu
+        var kodemenu = bantu[1];
+        document.getElementById("judulmenu").innerHTML = judulmenu;
+        $.ajax({
+			type:"GET", 
+			dataType: 'json',
+			url: "<?php echo site_url(); ?>" + "/Controller/get_multimeja/"+kodemenu, 
+			data:{ "mode":"resep" },                                     
+			success :function(result){
+                $('#listmodal21').empty();
+                $('#listmodal22').empty();
+                for(i=0;i<result.length;i++)
+                {
+                        var strg = '<li class="collection-item ">'
+                                +'<div class="row">'
+                                    +'<div class="col s4">'+result[i]['NOMORMEJA']+'</div>'
+                                    +'<div class="col s4">'+result[i]['jumlah']+'</div>'
+                                    +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb1'+i+'" name="f_'+result[i]['KODETRANS']+'"/><label for="cb1'+i+'">Finish</label></div>'
+                                +'</div>'
+                            +'</li>'; 
+                        $('#listmodal21').append(strg);
+                }
+                
+            },
+            error: function(msg){
+				alert('Reload Modal 2 Error');
+			}
+		});
+        
+    });
+         
+         
+   $("#submitmodal").click(function(){
+       boolWindowModal=false;
         var hasil="";
         for(i=0;i<totaldatamodal;i++)
         {
             if($('#cb'+i).is(':checked')==true)
             {      
                 hasil = hasil + $('#cb'+i).attr('name')+".";
-                
             }
         }
        hasil = hasil.substring(0,hasil.length-1);

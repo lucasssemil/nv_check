@@ -14,6 +14,13 @@ class checker_model extends CI_Model
 		return $this->db->get("t_orderchecker")->result_array();
 	}
     
+    public function get_multimeja($kodemenu)
+    {
+        $query = $this->db->query("SELECT NOMORMEJA, count(kodetrans) as jumlah from t_orderchecker where KODEMENURECIPE='".$kodemenu."' group by KODETRANS");
+        return $query->result_array();
+        
+    }
+    
     public function get_menu($nomeja)
     {
         $query = $this->db->query("select * from t_orderchecker where nomormeja='".$nomeja."' order by namamenurecipe");
