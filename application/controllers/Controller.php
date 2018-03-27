@@ -99,9 +99,16 @@ class Controller extends CI_Controller {
         
         echo json_encode($data);
         
-        
-       
-        
+    }
+    
+    public function update_statusmulti($kodemenu,$hasil)
+    {
+        $data = explode(".",$hasil);//dapetin nomor meja
+        for($i=0;$i<count($data);$i++)
+        {
+            $this->checker_model->update_statusmulti($kodemenu,$data[$i],'1');
+        }
+        echo json_encode($data);
     }
     
     public function get_menu($nomeja)

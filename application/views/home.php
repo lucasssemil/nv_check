@@ -412,6 +412,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div id="judulmenu" class="col m12 modal-trigger waves-effect waves-light" style="">
                 NAMA MENU
 			</div>
+            <div id="judulkode" class="col m12 modal-trigger waves-effect waves-light" style="visibility:hidden;">
+                
+			</div>
 		</div>
 		<div class="col m12" style="margin: 0px; padding:0px;">
 			<ul class="tabs tabs-fixed-width " style="">
@@ -432,7 +435,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		</div>
 	</div>
 	<div class="modal-footer">
-        <button id="submitmodal" class="modal-action modal-close waves-effect waves-green btn waves-effect waves-light">Submit</button>
+        <button id="submitmodal2" class="modal-action modal-close waves-effect waves-green btn waves-effect waves-light">Submit</button>
 	</div>
 </div>    
     
@@ -769,12 +772,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         var judulmenu = bantu[0];//dapetin nama menu
         var kodemenu = bantu[1];
         document.getElementById("judulmenu").innerHTML = judulmenu;
+        document.getElementById('judulkode').innerHTML = kodemenu;
         $.ajax({
 			type:"GET", 
 			dataType: 'json',
 			url: "<?php echo site_url(); ?>" + "/Controller/get_multimeja/"+kodemenu, 
 			data:{ "mode":"resep" },                                     
 			success :function(result){
+                totaldatamodal=result.length;
                 $('#listmodal21').empty();
                 $('#listmodal22').empty();
                 for(i=0;i<result.length;i++)
@@ -783,7 +788,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 +'<div class="row">'
                                     +'<div class="col s4">'+result[i]['NOMORMEJA']+'</div>'
                                     +'<div class="col s4">'+result[i]['jumlah']+'</div>'
-                                    +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb1'+i+'" name="f_'+result[i]['KODETRANS']+'"/><label for="cb1'+i+'">Finish</label></div>'
+                                    +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb1'+i+'" name="'+result[i]['NOMORMEJA']+'"/><label for="cb1'+i+'">Finish</label></div>'
                                 +'</div>'
                             +'</li>'; 
                         $('#listmodal21').append(strg);
@@ -821,6 +826,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
         });
    });
+       
+   $("#submitmodal2").click(function(){
+       var hasil="";
+       var kode = document.getElementById('judulkode').innerHTML;
+       for(i=0;i<totaldatamodal;i++)
+        {
+            if($('#cb1'+i).is(':checked')==true)
+            {
+                hasil = hasil +$('#cb1'+i).attr('name')+".";        
+            }
+        }
+       
+       hasil = hasil.substring(0,hasil.length-1);
+       $.ajax({
+			type:"post", 
+            dataType:"json",
+			url: "<?php echo site_url(); ?>" + "/Controller/update_statusmulti/"+kode+"/"+hasil, 
+			data:{ "mode":"resep" },                                     
+			success :function(result){
+                for(i=0;i<totaldatamodal;i++)
+                {
+                    reloaddata(result[i])    
+                }
+            }, error: function(msg){
+                alert('Submit Modal Error');
+            }
+        });
+     $('#modal1').modal('close');
+       
+   });
+
          
 	$('ul.tabs').tabs({
 		swipeable : false

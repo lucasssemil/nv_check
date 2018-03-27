@@ -16,7 +16,7 @@ class checker_model extends CI_Model
     
     public function get_multimeja($kodemenu)
     {
-        $query = $this->db->query("SELECT NOMORMEJA, count(kodetrans) as jumlah from t_orderchecker where KODEMENURECIPE='".$kodemenu."' group by KODETRANS");
+        $query = $this->db->query("SELECT NOMORMEJA, count(kodetrans) as jumlah from t_orderchecker where KODEMENURECIPE='".$kodemenu."' and status=0 group by KODETRANS");
         return $query->result_array();
         
     }
@@ -52,6 +52,16 @@ class checker_model extends CI_Model
         $this->db->update('t_orderchecker', $data);
     }
 	
+    public function update_statusmulti($kodemenu,$nomeja,$stat)
+    {
+        $data = array(
+            'status'=>$stat
+        );
+        
+        $this->db->where('kodemenurecipe',$kodemenu);
+        $this->db->where('nomormeja',$nomeja);
+        $this->db->update('t_orderchecker',$data);
+    }
 	
 	public function insert_table($kodetrans, $tglomset, $nomormeja)
 	{
