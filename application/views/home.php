@@ -33,8 +33,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		  margin-top: 5px;
 		}
         @font-face{
-            font-family:myfirstfont;
+            font-family:'myfirstfont';
             src: url(<?php echo base_url('assets/fonts/digital-7.ttf'); ?>);
+        }
+        @font-face{
+            font-family:'mysecondfont';
+            src: url(<?php echo base_url('assets/fonts/arsenal-regular.otf'); ?>);
+        }
+        
+        @font-face{
+            font-family:'mythirdfont';
+            src: url(<?php echo base_url('assets/fonts/arsenal-bold.otf'); ?>);
         }
 		
         .strikeout {
@@ -44,11 +53,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         .strikeout::after {
           border-bottom: 0.125em solid black;
           content: "";
-          left: 0;
+          left: 5%;
           margin-top: calc(0.125em / 2 * -1);
           position: absolute;
-          right: 50%;
+          right: 25%;
           top: 50%;
+        }
+        .header{
+            font-family:mythirdfont;
+        }
+        .isi{
+            font-family:mysecondfont;
         }
 	</style>
 	
@@ -57,8 +72,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div id="container" class="grey">
 	<div class="row" >
 		<div class="card col m2 z-depth-1 blue-grey darken-4" style="height: 700px; font-family:myfirstfont">
-			<div class="font_clock" style="color:white; font-size:22pt;"><?php echo date('Y/m/d'); ?></div>
-            <div class="font_clock" id="clock" style="color:white;font-size:34pt;">00:00:00</div>
+			<div class="font_clock" style="color:white; font-size:24pt; text-align:center;"><?php echo date('Y/m/d'); ?></div>
+            <div class="font_clock" id="clock" style="color:white;font-size:34pt; text-align:center;">00:00:00</div>
 			<table class="col m12 ">
 				<tbody>
 					<tr style="padding:0; color:white;">
@@ -82,17 +97,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			
 		</div>
-		<div class="col m10">
+		<div id="checker_container" class="col m10">
 			<div class="row">
 				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="1" style="" href="#modal1">
+					<div class="meja row2 modal-trigger waves-effe  ct waves-light header" name="1" style="" href="#modal1">
 						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 1</div>
 						<div id="hbill1" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
 						<div id="hmenu1" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
 						<div id="hjam1" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">14:30:00</div>
 						<div id="hlama1" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">00:00</div>
 					</div>
-					<div class="row2">
+					<div class="row2 isi">
 						<div class="col m12" style="margin: 0px; padding:0px;">
 							<ul class="tabs " style="">
 								<li class="tab col m4"><a href="#test11"><i class="material-icons-card">play_circle_filled</i></a></li>
@@ -117,14 +132,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="2" style="" href="#modal1">
+					<div class="meja row2 modal-trigger waves-effe  ct waves-light header" name="2" style="" href="#modal1">
 						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 2</div>
 						<div id="hbill2" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
 						<div id="hmenu2" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
 						<div id="hjam2" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">14:30:00</div>
 						<div id="hlama2" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">00:00</div>
 					</div>
-					<div class="row2">
+					<div class="row2 isi">
 						<div class="col m12" style="margin: 0px; padding:0px;">
 							<ul class="tabs" style="">
 								<li class="tab col m4"><a href="#test21"><i class="material-icons-card">play_circle_filled</i></a></li>
@@ -151,7 +166,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="row2 modal-trigger waves-effect waves-light" style="" href="#modal1">
+					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="3" style="" href="#modal1">
 						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 3</div>
 						<div id="hbill3" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
 						<div id="hmenu3" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
@@ -186,7 +201,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 				</div>
 				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="row2 modal-trigger waves-effect waves-light" style="" href="#modal1">
+					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="4" style="" href="#modal1">
 						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 4</div>
 						<div id="hbill4" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
 						<div id="hmenu4" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
@@ -222,7 +237,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 			<div class="row">
 				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="row2 modal-trigger waves-effect waves-light" style="" href="#modal1">
+					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="5" style="" href="#modal1">
 						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 5</div>
 						<div id="hbill5" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
 						<div id="hmenu5" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
@@ -265,7 +280,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="row2 modal-trigger waves-effect waves-light" style="" href="#modal1">
+					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="6" style="" href="#modal1">
 						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 6</div>
 						<div id="hbill6" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
 						<div id="hmenu6" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
@@ -299,7 +314,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="row2 modal-trigger waves-effect waves-light" style="" href="#modal1">
+					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="7" style="" href="#modal1">
 						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 7</div>
 						<div id="hbill7" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
 						<div id="hmenu7" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
@@ -334,7 +349,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 				</div>
 				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="row2 modal-trigger waves-effect waves-light" style="" href="#modal1">
+					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="8" style="" href="#modal1">
 						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 8</div>
 						<div id="hbill8" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
 						<div id="hmenu8" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
@@ -373,21 +388,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
     
 <!-- modal -->
-<div id="modal1" class="modal modal-fixed-footer" style="width: 25%;">
-	<div class="modal-content">
+<div id="modal1" class="modal modal-fixed-footer" style="width: 50%; margin:center;">
+	<div class="modal-content isi">
 		<div class="row">
-			<div class="col m12 modal-trigger waves-effect waves-light" style="">
-				<div id="m_nomeja" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 1</div>
-				<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="align-text: left">BILL : 567512</div>
-				<div class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
-				<div class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">14:30:00</div>
+			<div id="h_modal1" class="col m12 header modal-trigger waves-effect waves-light" style="">
+                <div id="m_mode" class="col m12 font_cardheader blue-grey lighten-3 " style="text-align:center; font-size:24px; color:red;">FINISH</div>
+				<div id="m_nomeja" class="col m8 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 1</div>
+				<div class="col m4 font_cardheader blue-grey lighten-3 black-text" style="align-text: right">BILL : 567512</div>
+				<div class="col m5 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
+				<div class="col m3 font_cardheader blue-grey lighten-3 black-text" style="">14:30:00</div>
 				<div class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">00:00</div>
 			</div>
 		</div>
 		<div class="col m12" style="margin: 0px; padding:0px;">
-			<ul class="tabs tabs-fixed-width " style="">
-				<li class="tab col m6"><a href="#testmodal1"><i class="material-icons-card">play_circle_filled</i></a></li>
-				<li class="tab col m6"><a href="#testmodal2"><i class="material-icons-card">stop</i></a></li>
+			<ul class="tabs tabs-fixed-width " style="overflow:hidden;">
+				<li id="btnmodal1finish" class="tab col m6"><a href="#testmodal1"><i class="material-icons-card">play_circle_filled</i></a></li>
+				<li id="btnmodal1unfinish" class="tab col m6"><a href="#testmodal2"><i class="material-icons-card">stop</i></a></li>
 				<!--<div class="indicator grey" style="z-index:1"> </div>-->
 			</ul>
 		</div>
@@ -409,7 +425,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div id="modal2" class="modal modal-fixed-footer" style="width: 25%;">
 	<div class="modal-content">
 		<div class="row">
-			<div id="judulmenu" class="col m12 modal-trigger waves-effect waves-light" style="">
+			<div id="judulmenu" class="col m12 modal-trigger waves-effect waves-light" style="font-size:24px; font-family:mythirdfont; text-align:center">
                 NAMA MENU
 			</div>
             <div id="judulkode" class="col m12 modal-trigger waves-effect waves-light" style="visibility:hidden;">
@@ -422,14 +438,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</ul>
 		</div>
 		<div class="col m12" style="margin: 0px; padding:0px;">
-            <div class="row">
-                <div class="col s4">NOMOR MEJA</div>
-                <div class="col s4">JUMLAH PESANAN</div>
+            <div class="row" style="font-family:mythirdfont;">
+                <div class="col s8">NOMOR MEJA</div>
                 <div class="col s4">FINISH</div>
             </div>
         </div>
         <div class="col m12" style="margin: 0px; padding:0px;">
-			<ul id="listmodal21" class="collection white font_cardlist scrollable_list" style="">
+			<ul id="listmodal21" class="collection white font_cardlist scrollable_list" style="font-family:mysecondfont;">
 				
 			</ul>
 		</div>
@@ -443,6 +458,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <script>
 
 	//Define websocket server
+    var month = new Array();
+                month[0] = "Jan";
+                month[1] = "Feb";
+                month[2] = "Mar";
+                month[3] = "Apr";
+                month[4] = "May";
+                month[5] = "Jun";
+                month[6] = "Jul";
+                month[7] = "Aug";
+                month[8] = "Sep";
+                month[9] = "Oct";
+                month[10] = "Nov";
+                month[11] = "Dec";
+                //alert(d);
     var now,hours,minutes,seconds;
     var ctr2=1;
     var boolWindowModal=false;
@@ -473,21 +502,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
     function hitungDurasi(tanggalomset,jamtarget)
     {
-        var month = new Array();
-                month[0] = "Jan";
-                month[1] = "Feb";
-                month[2] = "Mar";
-                month[3] = "Apr";
-                month[4] = "May";
-                month[5] = "Jun";
-                month[6] = "Jul";
-                month[7] = "Aug";
-                month[8] = "Sep";
-                month[9] = "Oct";
-                month[10] = "Nov";
-                month[11] = "Dec";
-                //alert(d);
-                now = new Date().getTime();
+         now = new Date().getTime();
          var date = tanggalomset.split("-");
                     e = parseInt(date[1]);
                    var d = month[e-1]+" "+date[2]+", "+date[0];
@@ -505,6 +520,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     
             hasil['proses'] = (now-jamtarget)*(-1);
         return hasil;
+    }
+    
+    function hitungSisawaktu(jamtarget,jamfinish)
+    { 
+        
+        var d = "Jan 01, 1997";
+        var test = jamtarget.toString();
+        var a = d+" "+test;
+        jamtarget= new Date(a).getTime();
+        test = jamfinish.toString();
+        var b = d+" "+test;
+        jamfinish = new Date(b).getTime();
+        var hasil = jamtarget-jamfinish;
+        var m = Math.floor((hasil % (1000 * 60 * 60)) / (1000 * 60));
+        var s = Math.floor((hasil % (1000 * 60)) /1000);
+        if(m<=0)
+        {
+            m=0;s=0;        
+        }
+        return m+":"+s;
     }
     
     function ProgressBarTick()
@@ -562,7 +597,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     document.getElementById("pB"+result[i]['nomormeja']+ctr).style.width = proses+"%";
                     document.getElementById("pB"+result[i]['nomormeja']+ctr).style.backgroundColor = warnabar;
                     document.getElementById("countdown"+result[i]['nomormeja']+ctr).innerHTML = m+":"+s;
+                     document.getElementById("pBa"+result[i]['nomormeja']+ctr).style.width = proses+"%";
+                    document.getElementById("pBa"+result[i]['nomormeja']+ctr).style.backgroundColor = warnabar;
+                    document.getElementById("countdowna"+result[i]['nomormeja']+ctr).innerHTML = m+":"+s;
                     
+                        
+                        
                     if(result[i]['nomormeja']==myElements)
                     {
                         document.getElementById("pBM"+myElements+ctr).style.width = proses+"%";
@@ -622,16 +662,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         tmp=result[i]['nomormeja'];
                     }
                     //mengeluarkan list pesanan
-                    //$('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9  ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'" class="determinate " style="width:0%"></div></div></li>');
-                    if(result[i]['status']==1){
-                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="strikeout">'+result[i]['namamenurecipe']+'</div></li>');
-                        $('#test'+result[i]['nomormeja']+'2 ul').append('<li class="collection-item "><div class="strikeout">'+result[i]['namamenurecipe']+'</div></li>');
-                    }
-                    if (result[i]['status']==0){
-                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item ">'+result[i]['namamenurecipe']+'</li>');
-                        
-                        $('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'" class="determinate " style="width:0%"></div></div></li>');
+                     if (result[i]['status']==0){
+                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdowna'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pBa'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
+                        $('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
                         ctr = ctr+1;
+                    } 
+                    if(result[i]['status']==1){
+                        var sisawaktu = hitungSisawaktu(result[i]['jamtarget'],result[i]['jamfinish']);
+                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result[i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
+                        $('#test'+result[i]['nomormeja']+'2 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result[i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
                     }
                     
                     //alert("meja"+tmp+"ctr"+ctr);    
@@ -687,13 +726,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     //$('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9  ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'" class="determinate " style="width:0%"></div></div></li>');
                   
                     if (result[i]['status']==0){
-                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item ">'+result[i]['namamenurecipe']+'</li>');
+                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdowna'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pBa'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
                         $('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
                         ctr = ctr+1;
                     } 
-                    if(result[i]['status']==1){
-                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="strikeout">'+result[i]['namamenurecipe']+'</div></li>');
-                        $('#test'+result[i]['nomormeja']+'2 ul').append('<li class="collection-item "><div class="strikeout">'+result[i]['namamenurecipe']+'</div></li>');
+                   if(result[i]['status']==1){
+                        var sisawaktu = hitungSisawaktu(result[i]['jamtarget'],result[i]['jamfinish']);
+                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result[i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
+                        $('#test'+result[i]['nomormeja']+'2 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result[i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
                     }
                     
                     //alert("meja"+tmp+"ctr"+ctr);    
@@ -730,9 +770,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     {
                         str = '<li class="collection-item ">'
                                 +'<div class="row">'
-                                    +'<div class="col s4 menu modal-trigger waves-effe" name="'+result[i]['NAMAMENURECIPE']+"_"+result[i]['KODEMENURECIPE']+'" href="#modal2">'+result[i]['NAMAMENURECIPE']+'</div>'
-                                    +'<div id="countdownM'+myElements+ctr2+'" class="col s4">00:00</div>'
-                                    +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb'+i+'" name="f_'+result[i]['KODETRANS']+'" /><label for="cb'+i+'">Finish</label></div>'
+                                    +'<div class="col s8 menu modal-trigger waves-effe" name="'+result[i]['NAMAMENURECIPE']+"_"+result[i]['KODEMENURECIPE']+'" href="#modal2">'+result[i]['NAMAMENURECIPE']+'</div>'
+                                    +'<div id="countdownM'+myElements+ctr2+'" class="col s2">00:00</div>'
+                                    +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="f_'+result[i]['KODETRANS']+'" /><label for="cb'+i+'"></label></div>'
                                 +'</div>'
                                 +'<div class="col m2"></div>'
                                 +'<div class="progress"><div id="pBM'+myElements+ctr2+'" class="determinate" style="width:'+
@@ -748,9 +788,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         var s = Math.floor((hasil['durasi'] % (1000 * 60)) /1000);
                          str = '<li class="collection-item ">'
                                 +'<div class="row">'
-                                    +'<div class="col s4">'+result[i]['NAMAMENURECIPE']+'</div>'
-                                    +'<div class="col s4">'+m+':'+s+'</div>'
-                                    +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb'+i+'" name="u_'+result[i]['KODETRANS']+'"/><label for="cb'+i+'">Unfinish</label></div>'
+                                    +'<div class="col s8">'+result[i]['NAMAMENURECIPE']+'</div>'
+                                    +'<div class="col s2">'+m+':'+s+'</div>'
+                                    +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="u_'+result[i]['KODETRANS']+'"/><label for="cb'+i+'"></label></div>'
                                 +'</div>'
                                 +'<div class="col m2"></div>'
                                 +'<div class="progress "><div class="determinate " style="width:0%"></div></div>'
@@ -786,9 +826,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 {
                         var strg = '<li class="collection-item ">'
                                 +'<div class="row">'
-                                    +'<div class="col s4">'+result[i]['NOMORMEJA']+'</div>'
-                                    +'<div class="col s4">'+result[i]['jumlah']+'</div>'
-                                    +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb1'+i+'" name="'+result[i]['NOMORMEJA']+'"/><label for="cb1'+i+'">Finish</label></div>'
+                                    +'<div class="col s8">'+result[i]['NOMORMEJA']+'</div>'
+                                    +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb1'+i+'" name="'+result[i]['KODETRANS']+"_"+result[i]['NOMORMEJA']+'"/><label for="cb1'+i+'"></label></div>'
                                 +'</div>'
                             +'</li>'; 
                         $('#listmodal21').append(strg);
@@ -827,9 +866,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         });
    });
        
+                                 
    $("#submitmodal2").click(function(){
        var hasil="";
-       var kode = document.getElementById('judulkode').innerHTML;
        for(i=0;i<totaldatamodal;i++)
         {
             if($('#cb1'+i).is(':checked')==true)
@@ -842,10 +881,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
        $.ajax({
 			type:"post", 
             dataType:"json",
-			url: "<?php echo site_url(); ?>" + "/Controller/update_statusmulti/"+kode+"/"+hasil, 
+			url: "<?php echo site_url(); ?>" + "/Controller/update_statusmulti/"+hasil, 
 			data:{ "mode":"resep" },                                     
 			success :function(result){
-                for(i=0;i<totaldatamodal;i++)
+                for(i=1;i<totaldatamodal;i++)
                 {
                     reloaddata(result[i])    
                 }
@@ -854,6 +893,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
         });
      $('#modal1').modal('close');
+       
+   });
+         
+         
+   $("#btnmodal1finish").click(function(){
+       document.getElementById('m_mode').innerHTML="FINISH";
+       document.getElementById('m_mode').style.color="Red";
+       
+   });
+
+   $("#btnmodal1unfinish").click(function(){
+       document.getElementById('m_mode').innerHTML="UNFINISH";
+       document.getElementById('m_mode').style.color="Green";
        
    });
 

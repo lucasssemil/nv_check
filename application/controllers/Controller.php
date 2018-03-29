@@ -83,16 +83,18 @@ class Controller extends CI_Controller {
        // $data = explode("/",$this->input->post('hasil'));//data[0]=finish/unfinish, data[1]=kodetransaksi
         
         $data = explode(".",$hasil);
+        $tgl = $this->checker_model->getSysdate();
+        
         for($i=0;$i<count($data);$i++)
         {
             $h = explode("_",$data[$i]);//$h[0]=f/u,h[1]=kodetrans
             if($h[0]=="f")
             {
-                $this->checker_model->update_status($h[1],'1');
+                $this->checker_model->update_status($h[1],'1',$tgl[0]['tglskrg']);
             }
             else
             {
-                $this->checker_model->update_status($h[1],'0');
+                $this->checker_model->update_status($h[1],'0','00:00:00');
             }
             
         }
@@ -101,14 +103,24 @@ class Controller extends CI_Controller {
         
     }
     
-    public function update_statusmulti($kodemenu,$hasil)
+    public function update_statusmulti($hasil)
     {
-        $data = explode(".",$hasil);//dapetin nomor meja
+        $data = explode(".",$hasil);
+        $meja = array();
+        $meja[0]="";
+        $ctr=0;
+        $tgl = $this->checker_model->getSysdate();
         for($i=0;$i<count($data);$i++)
         {
-            $this->checker_model->update_statusmulti($kodemenu,$data[$i],'1');
+            $h = explode("_",$data[$i]);//$h[0]=kodetransasksi,h[1]==nomormeja
+            $this->checker_model->update_statusmulti($h[0],$h[1],'1',$tgl[0]['tglskrg']);
+            if($meja[$ctr]!=$h[1])
+            {
+                $ctr=$ctr+1;
+                $meja[$ctr]=$h[1];
+            }
         }
-        echo json_encode($data);
+        echo json_encode($meja);
     }
     
     public function get_menu($nomeja)

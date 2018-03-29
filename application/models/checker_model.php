@@ -9,14 +9,14 @@ class checker_model extends CI_Model
 	}
 	
 	public function get_table(){
-		$this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status");
+		$this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status,jamfinish");
         $this->db->order_by("nomormeja, namamenurecipe");
 		return $this->db->get("t_orderchecker")->result_array();
 	}
     
     public function get_multimeja($kodemenu)
     {
-        $query = $this->db->query("SELECT NOMORMEJA, count(kodetrans) as jumlah from t_orderchecker where KODEMENURECIPE='".$kodemenu."' and status=0 group by KODETRANS");
+        $query = $this->db->query("SELECT NOMORMEJA,KODETRANS, count(kodetrans) as jumlah from t_orderchecker where KODEMENURECIPE='".$kodemenu."' and status=0 group by KODETRANS");
         return $query->result_array();
         
     }
@@ -29,36 +29,43 @@ class checker_model extends CI_Model
     
     public function get_progress($nomeja)
     {
-        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status");
+        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status,jamfinish");
         $this->db->where('nomormeja',$nomeja);
         $this->db->order_by("nomormeja, namamenurecipe");
 		return $this->db->get("t_orderchecker")->result_array();
     }
     
     public function get_allprogress(){
-        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status");
+        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status,jamfinish");
         $this->db->where('status','0');
         $this->db->order_by("nomormeja, namamenurecipe");
 		return $this->db->get("t_orderchecker")->result_array();
     }
     
-    public function update_status($kodetrans,$stat)
+    public function getSysdate()
+    {
+        $query = $this->db->query("SELECT DATE_FORMAT(SYSDATE(),'%H:%i:%s') as tglskrg");
+        return $query->result_array();
+    }
+    
+    public function update_status($kodetrans,$stat,$tgl)
     {
         $data = array(
-        'status' => $stat
+        'status' => $stat,
+        'jamfinish'=>$tgl
         );
-
         $this->db->where('kodetrans', $kodetrans);
         $this->db->update('t_orderchecker', $data);
     }
 	
-    public function update_statusmulti($kodemenu,$nomeja,$stat)
+    public function update_statusmulti($kodetrans,$nomeja,$stat,$tgl)
     {
         $data = array(
-            'status'=>$stat
+            'status'=>$stat,
+            'jamfinish'=>$tgl
         );
         
-        $this->db->where('kodemenurecipe',$kodemenu);
+        $this->db->where('kodetrans',$kodetrans);
         $this->db->where('nomormeja',$nomeja);
         $this->db->update('t_orderchecker',$data);
     }
