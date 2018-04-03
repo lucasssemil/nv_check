@@ -30,6 +30,7 @@ class Controller extends CI_Controller {
 		$this->load->helper('url');
         $data["totalmeja"] = $this->checker_model->getCountTable()[0]['total'];
         $data["totalorder"] = $this->checker_model->getCountOrder()[0]['total'];
+        $data["totalfinishorder"] = $this->checker_model->getCountFinishOrder()[0]['total'];
         $data["durasimakanan"] = $this->checker_model->getAllDurasi();
         //print_r($data["durasimakanan"]);
         $this->load->view('home',$data);
@@ -99,6 +100,9 @@ class Controller extends CI_Controller {
             
         }
         
+        $data["totalmeja"] = $this->checker_model->getCountTable()[0]['total'];
+        $data["totalorder"] = $this->checker_model->getCountOrder()[0]['total'];
+        $data["totalfinishorder"] = $this->checker_model->getCountFinishOrder()[0]['total'];
         echo json_encode($data);
         
     }
@@ -120,6 +124,9 @@ class Controller extends CI_Controller {
                 $meja[$ctr]=$h[1];
             }
         }
+        $meja["totalmeja"] = $this->checker_model->getCountTable()[0]['total'];
+        $meja["totalorder"] = $this->checker_model->getCountOrder()[0]['total'];
+        $meja["totalfinishorder"] = $this->checker_model->getCountFinishOrder()[0]['total'];
         echo json_encode($meja);
     }
     

@@ -82,7 +82,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<td style="padding:0;"><i class="material-icons-sidebar">people</i> </td>
 						<td style="padding:0;" class="font_info">40</td>
 						<td style="padding:0;"><i class="material-icons-sidebar">room_service</i></td>
-						<td style="padding:0;" class="font_info"><?php echo "0 / ".$totalorder; ?></td>
+						<td id="dashtotalorder" style="padding:0;" class="font_info"><?php echo $totalfinishorder." / ".$totalorder; ?></td>
 					</tr>
 					<tr style="color:white;">
 						<td style="padding:0;"><i class="material-icons-sidebar">sentiment_very_satisfied</i></td>
@@ -483,6 +483,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         minutes = Math.floor((now % (1000 * 60 * 60)) / (1000 * 60));
         seconds = Math.floor((now % (1000 * 60)) /1000);
         
+        
+        
         document.getElementById("clock").innerHTML = hours+" : "+minutes+" : "+seconds;
         ProgressBarTick();
     },1000)
@@ -783,17 +785,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     }
                     else
                     {
-                        var hasil = hitungDurasi(result[i]['TANGGALOMSET'],result[i]['JAMTARGET']);
-                        var m = Math.floor((hasil['durasi'] % (1000 * 60 * 60)) / (1000 * 60));
-                        var s = Math.floor((hasil['durasi'] % (1000 * 60)) /1000);
+                        var sisawaktu = hitungSisawaktu(result[i]['JAMTARGET'],result[i]['JAMFINISH']);
                          str = '<li class="collection-item ">'
                                 +'<div class="row">'
                                     +'<div class="col s8">'+result[i]['NAMAMENURECIPE']+'</div>'
-                                    +'<div class="col s2">'+m+':'+s+'</div>'
+                                    +'<div class="col s2">'+sisawaktu+'</div>'
                                     +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="u_'+result[i]['KODETRANS']+'"/><label for="cb'+i+'"></label></div>'
                                 +'</div>'
                                 +'<div class="col m2"></div>'
-                                +'<div class="progress "><div class="determinate " style="width:0%"></div></div>'
                             +'</li>'; 
                         $('#listmodal2').append(str);
                     }
@@ -859,6 +858,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			url: "<?php echo site_url(); ?>" + "/Controller/update_status/"+hasil, 
 			data:{ "mode":"resep" },                                     
 			success :function(result){
+                document.getElementById('dashtotalorder').innerHTML= result["totalfinishorder"]+" / "+result["totalorder"];
                 reloaddata(myElements);
             }, error: function(msg){
                 alert('Submit Modal Error');
@@ -884,10 +884,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			url: "<?php echo site_url(); ?>" + "/Controller/update_statusmulti/"+hasil, 
 			data:{ "mode":"resep" },                                     
 			success :function(result){
+                var tmp=0;
                 for(i=1;i<totaldatamodal;i++)
                 {
-                    reloaddata(result[i])    
+                    reloaddata(result[i])
                 }
+                document.getElementById('dashtotalorder').innerHTML= result["totalfinishorder"]+" / "+result["totalorder"];
             }, error: function(msg){
                 alert('Submit Modal Error');
             }

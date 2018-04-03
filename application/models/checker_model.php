@@ -96,6 +96,12 @@ class checker_model extends CI_Model
         return $query->result_array();
     }
     
+    public function getCountFinishOrder()
+    {
+        $query = $this->db->query("select count(*) as total from t_orderchecker where status=1");
+        return $query->result_array();
+    }
+    
     public function getCountOrder()
     {
         $query = $this->db->query("select count(*) as total from t_orderchecker");
