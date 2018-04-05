@@ -94,13 +94,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</tr>
 				</tbody>
 			</table>
-
+            
+            <a class="waves-effect waves-light btn-large col s12" style="margin-top:10%;"><i class="material-icons left">book</i>REPORT 1</a>
+            <a class="waves-effect waves-light btn-large col s12" style="margin-top:10%;"><i class="material-icons left">book</i>REPORT 2</a>
 			
 		</div>
 		<div id="checker_container" class="col m10">
 			<div class="row">
 				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="meja row2 modal-trigger waves-effe  ct waves-light header" name="1" style="" href="#modal1">
+					<div class="meja row2 modal-trigger waves-effe  ct waves-light hea der" name="1" style="" href="#modal1">
 						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 1</div>
 						<div id="hbill1" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
 						<div id="hmenu1" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
@@ -235,163 +237,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="5" style="" href="#modal1">
-						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 5</div>
-						<div id="hbill5" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
-						<div id="hmenu5" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
-						<div id="hjam5" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">14:30:00</div>
-						<div id="hlama5" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">00:00</div>
-					</div>
-					<div class="row2">
-						<div class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="tabs " style="">
-								<li class="tab col m4"><a href="#test51"><i class="material-icons-card">play_circle_filled</i></a></li>
-								<li class="tab col m4"><a href="#test52"><i class="material-icons-card">stop</i></a></li>
-								<li class="tab col m4"><a href="#test53"><i class="material-icons-card">dashboard</i></a></li>
-								<!--<div class="indicator grey" style="z-index:1"> </div>-->
-							</ul>
-						</div>
-						<div id="test51" class="col m12" style="margin: 0px; padding:0px;">
-							<ul id='list51' class="collection font_cardlist scrollable_list">
-							</ul>
-						</div>
-						<div id="test52" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection white font_cardlist scrollable_list" style="">
-								<li class="collection-item">ORANGE JUICE</li>
-								<li class="collection-item">ORANGE JUICE</li>
-								<li class="collection-item">ORANGE JUICE</li>
-								<li class="collection-item">KAKIGORI</li>
-								<li class="collection-item">KAKIGORI</li>
-							</ul>
-						</div>
-						<div id="test53" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection white font_cardlist scrollable_list" style="">
-								<li class="collection-item">2 CHIC TRYK BENTO</li>
-								<li class="collection-item">1 CHAWAN MUSHI</li>
-								<li class="collection-item">1 EBI MAYO BENTO</li>
-								<li class="collection-item">4 SENCA DINGIN</li>
-								<li class="collection-item">3 ORANGE JUICE</li>
-								<li class="collection-item">2 KAKIGORI</li>
-							</ul>
-						</div>
-						
-					</div>
-				</div>
-				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="6" style="" href="#modal1">
-						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 6</div>
-						<div id="hbill6" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
-						<div id="hmenu6" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
-						<div id="hjam6" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">14:30:00</div>
-						<div id="hlama6" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">00:00</div>
-					</div>
-					<div class="row2">
-						<div class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="tabs" style="">
-								<li class="tab col m4"><a href="#test61"><i class="material-icons-card">play_circle_filled</i></a></li>
-								<li class="tab col m4"><a href="#test62"><i class="material-icons-card">stop</i></a></li>
-								<li class="tab col m4"><a href="#test63"><i class="material-icons-card">dashboard</i></a></li>
-								
-							</ul>
-						</div>
-						<div id="test61" class="col m12" style="margin: 0px; padding:0px;">
-							<ul id='list51' class="collection font_cardlist scrollable_list">
-							</ul>
-						</div>
-						<div id="test62" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
-								<li class="collection-item"> ORANGE JUICE</li>
-							</ul>
-						</div>
-						<div id="test63" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
-								<li class="collection-item">2 CHIC TRYK BENTO</li>
-								<li class="collection-item">1 CHAWAN MUSHI</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="7" style="" href="#modal1">
-						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 7</div>
-						<div id="hbill7" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
-						<div id="hmenu7" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
-						<div id="hjam7" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">14:30:00</div>
-						<div id="hlama7" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">00:00</div>
-					</div>
-					<div class="row2">
-						<div class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="tabs" style="">
-								<li class="tab col m4"><a href="#test71"><i class="material-icons-card">play_circle_filled</i></a></li>
-								<li class="tab col m4"><a href="#test72"><i class="material-icons-card">stop</i></a></li>
-								<li class="tab col m4"><a href="#test73"><i class="material-icons-card">dashboard</i></a></li>
-								
-							</ul>
-						</div>
-						<div id="test71" class="col m12" style="margin: 0px; padding:0px;">
-							<ul id='list71' class="collection font_cardlist scrollable_list">
-							</ul>
-						</div>
-						<div id="test72" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
-								<li class="collection-item"> ORANGE JUICE</li>
-							</ul>
-						</div>
-						<div id="test73" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
-								<li class="collection-item">2 CHIC TRYK BENTO</li>
-								<li class="collection-item">1 CHAWAN MUSHI</li>
-							</ul>
-						</div>
-					</div>
-					
-				</div>
-				<div class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">
-					<div class="meja row2 modal-trigger waves-effe  ct waves-light" name="8" style="" href="#modal1">
-						<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 8</div>
-						<div id="hbill8" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : 567512</div>
-						<div id="hmenu8" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
-						<div id="hjam8" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">14:30:00</div>
-						<div id="hlama8" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">00:00</div>
-					</div>
-					<div class="row2">
-						<div class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="tabs" style="">
-								<li class="tab col m4"><a href="#test81"><i class="material-icons-card">play_circle_filled</i></a></li>
-								<li class="tab col m4"><a href="#test82"><i class="material-icons-card">stop</i></a></li>
-								<li class="tab col m4"><a href="#test83"><i class="material-icons-card">dashboard</i></a></li>
-								
-							</ul>
-						</div>
-						<div id="test81" class="col m12" style="margin: 0px; padding:0px;">
-						<ul id='list81' class="collection font_cardlist scrollable_list">
-							</ul>
-						</div>
-						<div id="test82" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
-								<li class="collection-item"> ORANGE JUICE</li>
-							</ul>
-						</div>
-						<div id="test83" class="col m12" style="margin: 0px; padding:0px;">
-							<ul class="collection font_cardlist scrollable_list">
-								<li class="collection-item">2 CHIC TRYK BENTO</li>
-								<li class="collection-item">1 CHAWAN MUSHI</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>
     
 <!-- modal -->
-<div id="modal1" class="modal modal-fixed-footer" style="width: 50%; margin:center;">
-	<div class="modal-content isi">
-		<div class="row">
-			<div id="h_modal1" class="col m12 header modal-trigger waves-effect waves-light" style="">
+<div id="modal1" class="modal modal-fixed-footer" style="width: 50%; margin:center;overflow:hidden;" >
+    <div class=" row" style="margin-top:2%; z-index: 1;">
+        <div id="h_modal1" class="col m12 header modal-trigger waves-effect waves-light" style="overflow:hidden;">
                 <div id="m_mode" class="col m12 font_cardheader blue-grey lighten-3 " style="text-align:center; font-size:24px; color:red;">FINISH</div>
 				<div id="m_nomeja" class="col m8 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 1</div>
 				<div class="col m4 font_cardheader blue-grey lighten-3 black-text" style="align-text: right">BILL : 567512</div>
@@ -399,21 +252,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="col m3 font_cardheader blue-grey lighten-3 black-text" style="">14:30:00</div>
 				<div class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">00:00</div>
 			</div>
-		</div>
 		<div class="col m12" style="margin: 0px; padding:0px;">
-			<ul class="tabs tabs-fixed-width " style="overflow:hidden;">
+			<ul class="tabs tabs-fixed-width " style="overflow-x:hidden;">
 				<li id="btnmodal1finish" class="tab col m6"><a href="#testmodal1"><i class="material-icons-card">play_circle_filled</i></a></li>
 				<li id="btnmodal1unfinish" class="tab col m6"><a href="#testmodal2"><i class="material-icons-card">stop</i></a></li>
 				<!--<div class="indicator grey" style="z-index:1"> </div>-->
 			</ul>
 		</div>
-		<div id="testmodal1" class="col m12" style="margin: 0px; padding:0px;">
-			<ul id="listmodal" class="collection white font_cardlist scrollable_list" style="">
-				
+    </div>
+	<div class="modal-content isi" style="padding-bottom:18%; margin-top:-5%; z-index: -1;">
+	
+		<div id="testmodal1" class="col m12" style="margin: 0px; padding:0px;" >
+			<ul id="listmodal" class="collection white font_cardlist scrollable_list" style="overflow-y:auto;">
 			</ul>
 		</div>
-		<div id="testmodal2" class="col m12" style="margin: 0px; padding:0px;">
-			<ul id="listmodal2" class="collection white font_cardlist scrollable_list" style="">
+		<div id="testmodal2" class="col m12" style="margin: 0px; padding:0px;"  >
+			<ul id="listmodal2" class="collection white font_cardlist scrollable_list" style="overflow-y:auto;">
 			</ul>
 		</div>
 	</div>
@@ -452,8 +306,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<div class="modal-footer">
         <button id="submitmodal2" class="modal-action modal-close waves-effect waves-green btn waves-effect waves-light">Submit</button>
 	</div>
-</div>    
+</div>
     
+<div id="modal3" class="modal modal-fixed-footer" style="width: 25%;">
+	<div class="modal-content">
+		<div class="row">
+			<div id="judulmenu" class="col m12 modal-trigger waves-effect waves-light" style="font-size:24px; font-family:mythirdfont; text-align:center">
+                NAMA MENU
+			</div>
+		</div>
+		<div class="col m12" style="margin: 0px; padding:0px;">
+			<ul class="tabs tabs-fixed-width " style="">
+				<!--<div class="indicator grey" style="z-index:1"> </div>-->
+			</ul>
+		</div>
+		<div class="col m12" style="margin: 0px; padding:0px;">
+            <div class="row" style="font-family:mythirdfont;">
+                <div class="col s8">NOMOR MEJA</div>
+                <div class="col s4">FINISH</div>
+            </div>
+        </div>
+        <div class="col m12" style="margin: 0px; padding:0px;">
+			<ul id="listmodal21" class="collection white font_cardlist scrollable_list" style="font-family:mysecondfont;">
+				
+			</ul>
+		</div>
+	</div>
+</div>   
     
 <script>
 
@@ -537,11 +416,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         var hasil = jamtarget-jamfinish;
         var m = Math.floor((hasil % (1000 * 60 * 60)) / (1000 * 60));
         var s = Math.floor((hasil % (1000 * 60)) /1000);
-        if(m<=0)
+        if(hasil<=0)
         {
             m=0;s=0;        
         }
         return m+":"+s;
+    }
+    
+    function getProgress(proses,db_durasi)
+    {
+        var temp = Math.floor((proses % (1000 * 60 * 60)) / (1000 * 60));
+        proses = Math.floor(proses % (1000 * 60)/1000)  + (temp*60);
+        var perdetik = 100/(db_durasi*60);//progressbar berjalan berapa perdetik
+        var hasil = proses*perdetik;
+        return hasil
     }
     
     function ProgressBarTick()
@@ -569,25 +457,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     var durasi = hasil['durasi'];
                     var proses = hasil['proses'];   
                     
-                   
-                    //alert(proses);
-                    var temp = Math.floor((proses % (1000 * 60 * 60)) / (1000 * 60));
-                    //alert(Math.floor(proses % (1000 * 60)/1000));
-                    proses = Math.floor(proses % (1000 * 60)/1000)  + (temp*60);
-                    var perdetik = 100/(result[i]['durasi']*60);//progressbar berjalan perdetik
-                    //alert("AWAL : "+i+": "+proses);
+                    var progresbar = getProgress(proses,result[i]['durasi']);
+                
                     warnabar = "greenteal";
                     
-                    if(proses*perdetik<=0)
+                    if(progresbar<=0)
                     {
-                        proses=100;
+                        progresbar=100;
                         durasi=0;
                         warnabar="red";
                     }
                     else
-                    {
-                        proses = proses*perdetik;        
-                        if(proses<=50)
+                    {        
+                        if(progresbar<=50)
                         {
                             warnabar="yellow";
                         }
@@ -595,24 +477,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     var m = Math.floor((durasi % (1000 * 60 * 60)) / (1000 * 60));
                     var s = Math.floor((durasi % (1000 * 60)) /1000);
                     if (result[i]['status']==0){
-                   //alert(i+" "+ctr);
-                    document.getElementById("pB"+result[i]['nomormeja']+ctr).style.width = proses+"%";
-                    document.getElementById("pB"+result[i]['nomormeja']+ctr).style.backgroundColor = warnabar;
-                    document.getElementById("countdown"+result[i]['nomormeja']+ctr).innerHTML = m+":"+s;
-                     document.getElementById("pBa"+result[i]['nomormeja']+ctr).style.width = proses+"%";
-                    document.getElementById("pBa"+result[i]['nomormeja']+ctr).style.backgroundColor = warnabar;
-                    document.getElementById("countdowna"+result[i]['nomormeja']+ctr).innerHTML = m+":"+s;
-                    
-                        
-                        
-                    if(result[i]['nomormeja']==myElements)
-                    {
-                        document.getElementById("pBM"+myElements+ctr).style.width = proses+"%";
-                        document.getElementById("pBM"+myElements+ctr).style.backgroundColor = warnabar;
-                        document.getElementById("countdownM"+myElements+ctr).innerHTML = m+":"+s;
-                    }
-                        
-                    ctr=ctr+1;
+                       //alert(i+" "+ctr);
+                        //alert(result[i]['nomormeja']+ctr);
+                        document.getElementById("pB"+result[i]['nomormeja']+ctr).style.width = progresbar+"%";
+                        document.getElementById("pB"+result[i]['nomormeja']+ctr).style.backgroundColor = warnabar;
+                        document.getElementById("countdown"+result[i]['nomormeja']+ctr).innerHTML = m+":"+s;
+                         document.getElementById("pBa"+result[i]['nomormeja']+ctr).style.width = progresbar+"%";
+                        document.getElementById("pBa"+result[i]['nomormeja']+ctr).style.backgroundColor = warnabar;
+                        document.getElementById("countdowna"+result[i]['nomormeja']+ctr).innerHTML = m+":"+s;
+
+
+
+                        if(result[i]['nomormeja']==myElements && boolWindowModal)
+                        {
+                            document.getElementById("pBM"+myElements+ctr).style.width = progresbar+"%";
+                            document.getElementById("pBM"+myElements+ctr).style.backgroundColor = warnabar;
+                            document.getElementById("countdownM"+myElements+ctr).innerHTML = m+":"+s;
+                        }
+
+                        ctr=ctr+1;
                     }
                 }
                 
