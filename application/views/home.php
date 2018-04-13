@@ -65,6 +65,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         .isi{
             font-family:mysecondfont;
         }
+        .barisMeja{
+            height: 350px;
+        }
 	</style>
 	
 </head>
@@ -95,8 +98,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</tbody>
 			</table>
             
-            <a class="waves-effect waves-light btn-large col s12" style="margin-top:10%;"><i class="material-icons left">book</i>REPORT 1</a>
-            <a class="waves-effect waves-light btn-large col s12" style="margin-top:10%;"><i class="material-icons left">book</i>REPORT 2</a>
+            <a id="btnReport1" class="waves-effect waves-light btn-large col s12" style="margin-top:10%;"><i class="material-icons left">book</i>LAPORAN REKAP MENU</a>
+            <a id="btnReport2" class="waves-effect waves-light btn-large col s12" style="margin-top:10%;"><i class="material-icons left">book</i>LAPORAN MENU</a>
 			
 		</div>
 		<div id="checker_container" class="col m10">
@@ -170,30 +173,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <button id="submitmodal2" class="modal-action modal-close waves-effect waves-green btn waves-effect waves-light">Submit</button>
 	</div>
 </div>
-    
-<div id="modal3" class="modal modal-fixed-footer" style="width: 25%;">
+
+<!-- modal 3-->    
+<div id="modal3" class="modal modal-fixed-footer" style="width: 50%; overflow:auto;">
 	<div class="modal-content">
-		<div class="row">
-			<div id="judulmenu" class="col m12 modal-trigger waves-effect waves-light" style="font-size:24px; font-family:mythirdfont; text-align:center">
-                NAMA MENU
+        <div class="row">
+			<div id="judulreport" class="col m12 modal-trigger waves-effect waves-light" style="font-size:24px; font-family:mythirdfont; text-align:center">
+                NAMA REPORT
 			</div>
 		</div>
-		<div class="col m12" style="margin: 0px; padding:0px;">
-			<ul class="tabs tabs-fixed-width " style="">
-				<!--<div class="indicator grey" style="z-index:1"> </div>-->
-			</ul>
-		</div>
-		<div class="col m12" style="margin: 0px; padding:0px;">
+        <div class="col m12" style="margin: 0px; padding:0px;">
             <div class="row" style="font-family:mythirdfont;">
-                <div class="col s8">NOMOR MEJA</div>
-                <div class="col s4">FINISH</div>
+                <div class="col s6">NAMA MENU RECIPE</div>
+                <div class="col s2">QTY</div>
+                <div class="col s4">TABLE</div>
             </div>
         </div>
-        <div class="col m12" style="margin: 0px; padding:0px;">
-			<ul id="listmodal21" class="collection white font_cardlist scrollable_list" style="font-family:mysecondfont;">
+		<div class="col m12" style="margin: 0px; padding:0px;">
+            <ul id="listmodal31" class="collection white font_cardlist scrollable_list" style="font-family:mysecondfont;">
 				
 			</ul>
-		</div>
+        </div>
 	</div>
 </div>   
     
@@ -297,13 +297,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
     function ProgressBarTick()
     {
-        $.ajax({
+            
+            $.ajax({
 			type:"GET", 
 			dataType: 'json',
 			url: "<?php echo site_url(); ?>" + "/Controller/get_allprogress", 
 			data:{ "mode":"resep" },                                     
 			success :function(result){
-				
                 var warnabar="";
                 var ctr=1;
                 var tmp=result[0]['nomormeja'];
@@ -470,8 +470,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     {
                         ctr=1;
                         tmp=result[i]['nomormeja'];
-                        
-                        if(tmp%4==1){
+                        ctrmeja++;
+                        if(ctrmeja%4==1){
                             ctrrow++;
                         }
                     }
@@ -480,7 +480,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     
                     if (!document.getElementById("meja"+result[i]['nomormeja'])) {
                         if (!document.getElementById("rowid"+ctrrow)){
-                            $('#checker_container').append('<div class="row" id="rowid'+ctrrow+'"></div>');
+                            $('#checker_container').append('<div class="row barisMeja" id="rowid'+ctrrow+'"></div>');
                         }
                             $('#rowid'+ctrrow).append('<div id="meja'+result[i]['nomormeja']+'" class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">'+
                         '<div class="meja row2 modal-trigger waves-effe  ct waves-light header" name="'+result[i]['nomormeja']+'" style="" href="#modal1">'+
@@ -539,68 +539,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	}
-	/*function reloadalldata(){
-		//alert('a1');
-		$.ajax({
-			type:"GET", 
-			dataType: 'json',
-			url: "<?php echo site_url(); ?>" + "/Controller/get_table", 
-			data:{ "mode":"resep" },                                     
-			success :function(result){
-				//$('#container').html(JSON.stringify(result));
-                //$('#test'+result[0]['nomormeja']+'1').html(JSON.stringify(result));
-                //alert(totmeja);
-                for(i=0;i<result.length;i++){
-                    $('#list'+result[i]['nomormeja']+'1').empty();
-                    $('#list'+result[i]['nomormeja']+'3').empty();
-                    $('#list'+result[i]['nomormeja']+'2').empty();
-                }
-             
-                var tmp =0;
-                var ctr=1;
-                
-                for(i=0;i<result.length;i++)
-                {
-                    if(tmp!=result[i]['nomormeja'])
-                    {
-                        document.getElementById("hjam"+ctr).innerHTML = result[i]['jamorder'];
-                        tmp=result[i]['nomormeja'];  
-                        ctr = ctr+1;
-                    }
-                }
-                
-                //untuk inisiasi variabel progressbar dan countdown
-                ctr=1;
-                tmp=result[0]['nomormeja'];
-                
-                for(i=0;i<result.length;i++){
-                    
-                    if(tmp!=result[i]['nomormeja'])
-                    {
-                        ctr=1;
-                        tmp=result[i]['nomormeja'];
-                    }
-                    //mengeluarkan list pesanan
-                    //$('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9  ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'" class="determinate " style="width:0%"></div></div></li>');
-                  
-                    if (result[i]['status']==0){
-                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdowna'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pBa'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
-                        $('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
-                        ctr = ctr+1;
-                    } 
-                   if(result[i]['status']==1){
-                        var sisawaktu = hitungSisawaktu(result[i]['jamtarget'],result[i]['jamfinish']);
-                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result[i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
-                        $('#test'+result[i]['nomormeja']+'2 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result[i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
-                    }
-                    
-                    //alert("meja"+tmp+"ctr"+ctr);    
-                }
-			}, error: function(msg){
-				alert('Reload Data Error');
-			}
-		});
-	}*/
     
 	 $(document).ready(function(){
 	// // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
@@ -660,6 +598,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
     });
          
+    $(document).on("click", "#btnReport1", function(){
+        document.getElementById("judulreport").innerHTML = "LAPORAN REKAP MENU";
+        $("#modal3").modal("open");
+
+        
+    });
+    $(document).on("click", "#btnReport2", function(){
+        document.getElementById("judulreport").innerHTML = "LAPORAN MENU";
+        $("#modal3").modal("open");
+    }); 
+    function get_report_data1(){
+        $.ajax({
+		type:"GET", 
+		dataType: 'json',
+		url: "<?php echo site_url(); ?>" + "/Controller/getReport1/", 
+		data:{ "mode":"resep" },                                     
+		success :function(result){
+            for(i=0;i<result.length;i++)
+            {
+                var str = '<li class="collection-item ">'
+                                +'<div class="row">'
+                                    +'<div class="col s6 menu">'+result[i]['NAMAMENURECIPE']+'</div>'
+                                    +'<div class="col s2 menu">'+result[i]['QTY']+'</div>'
+                                    +'<div class="col s4 menu">'+result[i]['listmeja']+'</div>'
+                                +'</div>'
+                            +'</li>'; 
+                $("#listmodal31").append(str);
+                    
+            }
+            
+        }
+       });
+    } 
     //modal 2
     $(document).on("click", ".menu", function () {
        
@@ -671,7 +642,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $.ajax({
 			type:"GET", 
 			dataType: 'json',
-			url: "<?php echo site_url(); ?>" + "/Controller/get_multimeja/"+kodemenu, 
+			url: "<?php echo site_url(); ?>" + "/Controller/get_multimeja/"+kodemenu+"/0", 
 			data:{ "mode":"resep" },                                     
 			success :function(result){
                 totaldatamodal=result.length;
@@ -696,7 +667,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
     });
          
-         
+    
    $("#submitmodal").click(function(){
        boolWindowModal=false;
         var hasil="";
@@ -771,7 +742,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('ul.tabs').tabs({
 		swipeable : false
 	});
-         
+        get_report_data1(); 
 		reloadalldata();
         ProgressBarTick();
 	// //$('ul.tabs').tabs('select_tab', 'tab_id');
