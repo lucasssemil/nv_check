@@ -23,6 +23,7 @@ class Controller extends CI_Controller {
 		parent::__construct();
 		$this->load->model('checker_model');
         $this->load->helper('array');
+        $this->load->library('table');
 	}
 	
 	public function index()
@@ -136,9 +137,27 @@ class Controller extends CI_Controller {
         echo json_encode($data);
     }
     
-    public function get_multimeja($kodemenu)
+    public function get_multimeja($kodemenu,$sts)
     {
-        $data = $this->checker_model->get_multimeja($kodemenu);
+        $data = $this->checker_model->get_multimeja($kodemenu,$sts);
+        echo json_encode($data);
+    }
+    
+    public function getReport1()
+    {
+        $data = $this->checker_model->getAllmenu();
+        
+        for($i=0;$i<count($data);$i++)
+        {
+            $test = $this->checker_model->getReportMeja($data[$i]["KODEMENURECIPE"]);
+            $data[$i]["listmeja"]="";
+            for($j=0;$j<count($test);$j++)
+            {
+                $data[$i]["listmeja"] = $data[$i]["listmeja"].",".$test[$j]["NOMORMEJA"];   
+            }
+            $data[$i]["listmeja"] = substr($data[$i]["listmeja"],1);
+        }
+        
         echo json_encode($data);
     }
 }

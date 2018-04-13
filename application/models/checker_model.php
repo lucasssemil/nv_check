@@ -14,11 +14,10 @@ class checker_model extends CI_Model
 		return $this->db->get("t_orderchecker")->result_array();
 	}
     
-    public function get_multimeja($kodemenu)
+    public function get_multimeja($kodemenu,$sts)
     {
-        $query = $this->db->query("SELECT NOMORMEJA,KODETRANS, count(kodetrans) as jumlah from t_orderchecker where KODEMENURECIPE='".$kodemenu."' and status=0 group by KODETRANS");
+        $query = $this->db->query("SELECT NOMORMEJA,KODETRANS, count(kodetrans) as jumlah from t_orderchecker where KODEMENURECIPE='".$kodemenu."' and status=".$sts." group by KODETRANS");
         return $query->result_array();
-        
     }
     
     public function get_menu($nomeja)
@@ -111,6 +110,22 @@ class checker_model extends CI_Model
     public function getAllDurasi()
     {
         $query = $this->db->query("select jamorder,durasi from t_orderchecker order by nomormeja");
+        return $query->result_array();
+    }
+    
+    
+    public function getAllMenu(){
+        $query = $this->db->query("select KODEMENURECIPE, NAMAMENURECIPE,count(NAMAMENURECIPE) as QTY from t_orderchecker group by KODEMENURECIPE order by NAMAMENURECIPE");
+        return $query->result_array();
+    }
+        public function getAllMenuJAM(){
+        $query = $this->db->query("select KODEMENURECIPE, NAMAMENURECIPE,JAMORDER,DURASI,(select NOMORMEJA from t_orderchecker k where k.KODEMENURECIPE=t.KODEMENURECIPE) from t_orderchecker t order by JAMORDER");
+        return $query->result_array();
+    }
+    
+    public function getReportMeja($kodemenu)
+    {
+        $query = $this->db->query("select distinct(NOMORMEJA) from t_orderchecker where KODEMENURECIPE='".$kodemenu."' order by NAMAMENURECIPE");
         return $query->result_array();
     }
     
