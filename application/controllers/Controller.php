@@ -61,7 +61,9 @@ class Controller extends CI_Controller {
 	}
 	
 	public function get_table(){
-		$data = $this->checker_model->get_table();
+		$data['datameja'] = $this->checker_model->get_table();
+        $data['dataheader'] = $this->checker_model->getDataHeader();
+        $data['datatotalfinish'] = $this->checker_model->getCountFinish();
 		echo json_encode($data);
         //echo "sfsdf";
         //$json = json_decode($data, true);

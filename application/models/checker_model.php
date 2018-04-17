@@ -95,9 +95,21 @@ class checker_model extends CI_Model
         return $query->result_array();
     }
     
+    public function getDataHeader()
+    {
+        $query = $this->db->query("SELECT jamorder as jammasuk, count(*) as total,kodetrans  FROM t_orderchecker group by NOMORMEJA");
+        return $query->result_array();
+    }
+    
     public function getCountFinishOrder()
     {
         $query = $this->db->query("select count(*) as total from t_orderchecker where status=1");
+        return $query->result_array();
+    }
+    
+    public function getCountFinish()
+    {
+        $query = $this->db->query("select count(*) as totalfinish from t_orderchecker where status=1 group by nomormeja");
         return $query->result_array();
     }
     
@@ -118,7 +130,8 @@ class checker_model extends CI_Model
         $query = $this->db->query("select KODEMENURECIPE, NAMAMENURECIPE,count(NAMAMENURECIPE) as QTY from t_orderchecker group by KODEMENURECIPE order by NAMAMENURECIPE");
         return $query->result_array();
     }
-        public function getAllMenuJAM(){
+    
+    public function getAllMenuJAM(){
         $query = $this->db->query("select KODEMENURECIPE, NAMAMENURECIPE,JAMORDER,DURASI,(select NOMORMEJA from t_orderchecker k where k.KODEMENURECIPE=t.KODEMENURECIPE) from t_orderchecker t order by JAMORDER");
         return $query->result_array();
     }
