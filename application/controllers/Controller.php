@@ -51,6 +51,11 @@ class Controller extends CI_Controller {
 		$this->load->view('checker_testjson');
 	}
 	
+    public function insert_torder()
+    {
+        redirect("insert_torder");
+    }
+    
 	public function insert_table()
 	{	
 		// $this->input->post("")
@@ -117,7 +122,7 @@ class Controller extends CI_Controller {
         $meja[0]="";
         $ctr=0;
         $tgl = $this->checker_model->getSysdate();
-        for($i=0;$i<count($data);$i++)
+        for($i=0;$i<count($data);$i++)            
         {
             $h = explode("_",$data[$i]);//$h[0]=kodetransasksi,h[1]==nomormeja
             $this->checker_model->update_statusmulti($h[0],$h[1],'1',$tgl[0]['tglskrg']);

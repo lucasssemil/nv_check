@@ -229,6 +229,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
         
         document.getElementById("clock").innerHTML = hours+" : "+minutes+" : "+seconds;
+        
+        for(var i=1;i<7;i++)
+        {
+            var waktu = new Date("2011/03/04 "+data[i]["jamorder"]);
+            waktu = now-waktu;
+            h = Math.floor((waktu % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            m = Math.floor((waktu % (1000 * 60 * 60)) / (1000 * 60));
+            s = Math.floor((waktu % (1000 * 60)) /1000);
+            document.getElementById('hlama'+i).innerHTML = h+":"+m+":"+s ;        
+        }
         ProgressBarTick();
     },1000)
     
@@ -312,6 +322,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 data[i]["tanggalomset"]=result[i]["tanggalomset"];
                 data[i]["jamtarget"]=result[i]["jamtarget"];
                 data[i]["durasi"]=result[i]["durasi"];
+                data[i]["jamorder"]=result[i]["jamorder"];
             }
         
                 
