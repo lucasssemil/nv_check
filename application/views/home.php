@@ -81,9 +81,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<tbody>
 					<tr style="padding:0; color:white;">
 						<td style="padding:0;"><i class="material-icons-sidebar">receipt</i></td>
-						<td id="totalmeja" style="padding:0;" class="font_info"><?php echo $totalmeja; ?></td>
+						<td id="dashtotalmeja" style="padding:0;" class="font_info">0</td>
 						<td style="padding:0;"><i class="material-icons-sidebar">people</i> </td>
-						<td style="padding:0;" class="font_info">40</td>
+						<td id="dashtotalorang"style="padding:0;" class="font_info">0</td>
 						<td style="padding:0;"><i class="material-icons-sidebar">room_service</i></td>
 						<td id="dashtotalorder" style="padding:0;" class="font_info"><?php echo $totalfinishorder." / ".$totalorder; ?></td>
 					</tr>
@@ -218,6 +218,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     var ctr2=1;
     var boolWindowModal=false;
     var myElements;
+    var totalmeja=0;   
     var data;
     var x = setInterval(function(){
         now = new Date().getTime();
@@ -230,15 +231,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
         document.getElementById("clock").innerHTML = hours+" : "+minutes+" : "+seconds;
         
-        for(var i=1;i<7;i++)
-        {
-            var waktu = new Date("2011/03/04 "+data[i]["jamorder"]);
-            waktu = now-waktu;
-            h = Math.floor((waktu % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            m = Math.floor((waktu % (1000 * 60 * 60)) / (1000 * 60));
-            s = Math.floor((waktu % (1000 * 60)) /1000);
-            document.getElementById('hlama'+i).innerHTML = h+":"+m+":"+s ;        
-        }
+        //for(var i=1;i<7;i++)
+        //{
+        //    var waktu = new Date("2011/03/04 "+data[i]["jamorder"]);
+        //    waktu = now-waktu;
+        //    h = Math.floor((waktu % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        //    m = Math.floor((waktu % (1000 * 60 * 60)) / (1000 * 60));
+        //    s = Math.floor((waktu % (1000 * 60)) /1000);
+        //    document.getElementById('hlama'+i).innerHTML = h+":"+m+":"+s ;        
+        //}
         ProgressBarTick();
     },1000)
     
@@ -255,10 +256,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	Server.connect();
 	
     
-    function hitungDurasi(tanggalomset,jamtarget)
+    function hitungDurasi(tglomzet,jamtarget)
     {
          now = new Date().getTime();
-         var date = tanggalomset.split("-");
+         var date = tglomzet.split("-");
                     e = parseInt(date[1]);
                    var d = month[e-1]+" "+date[2]+", "+date[0];
                 
@@ -319,7 +320,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             {
                 data[i]=[];
                 data[i]["nomormeja"]=result[i]["nomormeja"];
-                data[i]["tanggalomset"]=result[i]["tanggalomset"];
+                data[i]["tglomzet"]=result[i]["tglomzet"];
                 data[i]["jamtarget"]=result[i]["jamtarget"];
                 data[i]["durasi"]=result[i]["durasi"];
                 data[i]["jamorder"]=result[i]["jamorder"];
@@ -331,6 +332,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
     }
+    
     
     function ProgressBarTick()
     {
@@ -346,7 +348,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 tmp=data[i]['nomormeja'];
             }
         
-            var hasil = hitungDurasi(data[i]['tanggalomset'],data[i]['jamtarget'])
+            var hasil = hitungDurasi(data[i]['tglomzet'],data[i]['jamtarget'])
             var durasi = hasil['durasi'];
             var proses = hasil['proses'];   
             
@@ -406,26 +408,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
              
                 var tmp =0;
                 var ctr=1;
+                var tmptotal=0;
+                var tmpfinish=0;
                 
-                for(i=0;i<result.length;i++)
-                {
-                    if(tmp!=result[i]['nomormeja'])
-                    {
-                        document.getElementById("hjam"+ctr).innerHTML = result[i]['jamorder'];
-                        tmp=result[i]['nomormeja'];  
-                        ctr = ctr+1;
-                    }
-                }
-                
-                //untuk inisiasi variabel progressbar dan countdown
                 ctr=1;
                 tmp=result[0]['nomormeja'];
                 
                 for(i=0;i<result.length;i++){
                     
+                    //ganti meja
                     if(tmp!=result[i]['nomormeja'])
                     {
                         ctr=1;
+                        tmptotal=0;
+                        tmpfinish=0;
                         tmp=result[i]['nomormeja'];
                     }
                     //mengeluarkan list pesanan
@@ -438,7 +434,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         var sisawaktu = hitungSisawaktu(result[i]['jamtarget'],result[i]['jamfinish']);
                         $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result[i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
                         $('#test'+result[i]['nomormeja']+'2 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result[i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
+                        tmpfinish = tmpfinish+1;
                     }
+                    tmptotal=tmptotal+1;
+                    
+                    document.getElementById("hmenu"+result[i]['nomormeja']).innerHTML = tmpfinish+"/"+tmptotal;
                     
                     //alert("meja"+tmp+"ctr"+ctr);    
                 }
@@ -475,13 +475,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 //untuk inisiasi variabel progressbar dan countdown
                 ctr=1;
                 var ctr2=0;
+                var tmpfinish=0;
+                var tmptotal=0;
                 tmp=result['datameja'][0]['nomormeja'];
-                
                 for(i=0;i<result['datameja'].length;i++){
-                    
                     if(tmp!=result['datameja'][i]['nomormeja'])
-                    {  
+                    { 
                         ctr=1;
+                        tmptotal=0;
+                        tmpfinish=0;
                         ctr2=ctr2+1;
                         tmp=result['datameja'][i]['nomormeja'];
                         ctrmeja++;
@@ -496,17 +498,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         if (!document.getElementById("rowid"+ctrrow)){
                             $('#checker_container').append('<div class="row barisMeja" id="rowid'+ctrrow+'"></div>');
                         }
-                            var headerorder="0/"+result['dataheader'][ctr2]['total'];
-                            if(ctr2<result['datatotalfinish'].length)
-                            {
-                                headerorder =result['datatotalfinish'][ctr2]['totalfinish']+"/"+result['dataheader'][ctr2]['total'];                                    
-                            }
                             $('#rowid'+ctrrow).append('<div id="meja'+result['datameja'][i]['nomormeja']+'" class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">'+
                         '<div class="meja row2 modal-trigger waves-effe  ct waves-light header" name="'+result['datameja'][i]['nomormeja']+'" style="" href="#modal1">'+
                             '<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : '+result['datameja'][i]['nomormeja']+'</div>'+
                             '<div id="hbill'+result['datameja'][i]['nomormeja']+'" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : '+result['dataheader'][ctr2]['kodetrans']+'</div>'+
-                            '<div id="hmenu'+result['datameja'][i]['nomormeja']+'" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">'+headerorder+'</div>'+
-                            '<div id="hjam'+result['datameja'][i]['nomormeja']+'" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">'+result['datameja'][i]['jamorder']+'</div>'+
+                            '<div id="hmenu'+result['datameja'][i]['nomormeja']+'" class="col m4 font_cardheader blue-grey lighten-3 black-text" style=""></div>'+
+                            '<div id="hjam'+result['datameja'][i]['nomormeja']+'" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">'+result['datameja'][i]['JAMORDER']+'</div>'+
                             '<div id="hlama'+result['datameja'][i]['nomormeja']+'" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">00:00</div>'+
                         '</div>'+
                         '<div class="row2 isi" id="rowlist'+result['datameja'][i]['nomormeja']+'">'+
@@ -536,22 +533,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     var $tabs = $('#tabs'+result['datameja'][i]['nomormeja']);
                     $tabs.children().removeAttr('style'); 
                     }
-                    if (result['datameja'][i]['status']==0){
-                        $('#test'+result['datameja'][i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="col m9 ">'+result['datameja'][i]['namamenurecipe']+'</div><div id="countdowna'+result['datameja'][i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pBa'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
-                        $('#test'+result['datameja'][i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9 ">'+result['datameja'][i]['namamenurecipe']+'</div><div id="countdown'+result['datameja'][i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
-                        ctr = ctr+1;
+                    if (result['datameja'][i]['STATUS']==0){
+                        $('#test'+result['datameja'][i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="col m9 ">'+result['datameja'][i]['NAMAMENURECIPE']+'</div><div id="countdowna'+result['datameja'][i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pBa'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
+                        $('#test'+result['datameja'][i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9 ">'+result['datameja'][i]['NAMAMENURECIPE']+'</div><div id="countdown'+result['datameja'][i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
+                        ctr = ctr+1;   
                     } 
-                   if(result['datameja'][i]['status']==1){
-                        var sisawaktu = hitungSisawaktu(result['datameja'][i]['jamtarget'],result['datameja'][i]['jamfinish']);
-                        $('#test'+result['datameja'][i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result['datameja'][i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
-                        $('#test'+result['datameja'][i]['nomormeja']+'2 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result['datameja'][i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
+                   if(result['datameja'][i]['STATUS']==1){
+                        var sisawaktu = hitungSisawaktu(result['datameja'][i]['JAMTARGET'],result['datameja'][i]['JAMFINISH']);
+                        $('#test'+result['datameja'][i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result['datameja'][i]['NAMAMENURECIPE']+'</div><div>'+sisawaktu+'</div></li>');
+                        $('#test'+result['datameja'][i]['nomormeja']+'2 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result['datameja'][i]['NAMAMENURECIPE']+'</div><div>'+sisawaktu+'</div></li>');
+                       tmpfinish = tmpfinish+1;
                     }
                     
+                            tmptotal = tmptotal+1;
                     $tabs.tabs().tabs('select_tab', 'test'+result['datameja'][i]['nomormeja']+'2');
                     $tabs.tabs().tabs('select_tab', 'test'+result['datameja'][i]['nomormeja']+'3');
                     $tabs.tabs().tabs('select_tab', 'test'+result['datameja'][i]['nomormeja']+'1');
-                    //alert("meja"+tmp+"ctr"+ctr);    
+                    //alert("meja"+tmp+"ctr"+ctr); 
+                    document.getElementById("hmenu"+result['datameja'][i]['nomormeja']).innerHTML = tmpfinish+"/"+tmptotal;
                 }
+                totalmeja=ctrmeja;
+                
+                document.getElementById("dashtotalmeja").innerHTML = totalmeja;
+                document.getElementById("dashtotalorang").innerHTML = result['totalorang'][0]['jumlah'];
+                
 			}, error: function(msg){
 				alert('Reload Data Error');
 			}
@@ -561,7 +566,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
 	 $(document).ready(function(){
 	// // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
-	$('.modal').modal();
+         
+         $('.modal').modal();
          
         //modal 1
        $(document).on("click", ".meja", function () {
@@ -587,7 +593,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 +'<div class="row">'
                                     +'<div class="col s8 menu modal-trigger waves-effe" name="'+result[i]['NAMAMENURECIPE']+"_"+result[i]['KODEMENURECIPE']+'" href="#modal2">'+result[i]['NAMAMENURECIPE']+'</div>'
                                     +'<div id="countdownM'+myElements+ctr2+'" class="col s2">00:00</div>'
-                                    +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="f_'+result[i]['KODETRANS']+'" /><label for="cb'+i+'"></label></div>'
+                                    +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="f_'+result[i]['KODETRANS']+'_'+result[i]['KODELOKASI']+'_'+result[i]['TGLOMZET']+'_'+result[i]['URUTAN']+'" /><label for="cb'+i+'"></label></div>'
                                 +'</div>'
                                 +'<div class="col m2"></div>'
                                 +'<div class="progress"><div id="pBM'+myElements+ctr2+'" class="determinate" style="width:'+
@@ -603,7 +609,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 +'<div class="row">'
                                     +'<div class="col s8">'+result[i]['NAMAMENURECIPE']+'</div>'
                                     +'<div class="col s2">'+sisawaktu+'</div>'
-                                    +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="u_'+result[i]['KODETRANS']+'"/><label for="cb'+i+'"></label></div>'
+                                    +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="u_'+result[i]['KODETRANS']+'_'+result[i]['KODELOKASI']+'_'+result[i]['TGLOMZET']+'_'+result[i]['URUTAN']+'"/><label for="cb'+i+'"></label></div>'
                                 +'</div>'
                                 +'<div class="col m2"></div>'
                             +'</li>'; 
@@ -661,7 +667,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $.ajax({
 			type:"GET", 
 			dataType: 'json',
-			url: "<?php echo site_url(); ?>" + "/Controller/get_multimeja/"+kodemenu+"/0", 
+			url: "<?php echo site_url(); ?>" + "/Controller/get_multimeja/"+kodemenu , 
 			data:{ "mode":"resep" },                                     
 			success :function(result){
                 totaldatamodal=result.length;
@@ -672,7 +678,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         var strg = '<li class="collection-item ">'
                                 +'<div class="row">'
                                     +'<div class="col s8">'+result[i]['NOMORMEJA']+'</div>'
-                                    +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb1'+i+'" name="'+result[i]['KODETRANS']+"_"+result[i]['NOMORMEJA']+'"/><label for="cb1'+i+'"></label></div>'
+                                    +'<div class="col s4"><input type="checkbox" class="filled-in" id="cb1'+i+'" name="'+result[i]['KODETRANS']+'_'+result[i]['KODELOKASI']+'_'+result[i]['TGLOMZET']+'_'+result[i]['URUTAN']+"_"+result[i]['NOMORMEJA']+'"/><label for="cb1'+i+'"></label></div>'
                                 +'</div>'
                             +'</li>'; 
                         $('#listmodal21').append(strg);
@@ -707,20 +713,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 document.getElementById('dashtotalorder').innerHTML= result["totalfinishorder"]+" / "+result["totalorder"];
                 reloaddata(myElements);
             }, error: function(msg){
-                alert('Submit Modal Error');
+                alert('Submit Modal 1 Error');
             }
         });
-   });
-       
+   }); 
                                  
    $("#submitmodal2").click(function(){
        var hasil="";
-       var totalmeja=0;
+       var totalmejamodal=0;
        for(i=0;i<totaldatamodal;i++)
         {
             if($('#cb1'+i).is(':checked')==true)
             {
-                totalmeja = totalmeja+1;
+                totalmejamodal = totalmeja+1;
                 hasil = hasil +$('#cb1'+i).attr('name')+".";        
             }
         }
@@ -733,7 +738,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			data:{ "mode":"resep" },                                     
 			success :function(result){
                 var tmp=0;
-                for(i=1;i<=totalmeja;i++)
+                for(i=1;i<=totalmejamodal;i++)
                 {
                     reloaddata(result[i]);
                 }

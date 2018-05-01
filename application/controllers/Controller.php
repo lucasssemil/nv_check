@@ -29,10 +29,8 @@ class Controller extends CI_Controller {
 	public function index()
 	{
 		$this->load->helper('url');
-        $data["totalmeja"] = $this->checker_model->getCountTable()[0]['total'];
         $data["totalorder"] = $this->checker_model->getCountOrder()[0]['total'];
         $data["totalfinishorder"] = $this->checker_model->getCountFinishOrder()[0]['total'];
-        $data["durasimakanan"] = $this->checker_model->getAllDurasi();
         //print_r($data["durasimakanan"]);
         $this->load->view('home',$data);
 		//$this->load->view('mejakotak');
@@ -68,7 +66,7 @@ class Controller extends CI_Controller {
 	public function get_table(){
 		$data['datameja'] = $this->checker_model->get_table();
         $data['dataheader'] = $this->checker_model->getDataHeader();
-        $data['datatotalfinish'] = $this->checker_model->getCountFinish();
+        $data['totalorang'] = $this->checker_model->get_jumlahorang();
 		echo json_encode($data);
         //echo "sfsdf";
         //$json = json_decode($data, true);
@@ -96,19 +94,18 @@ class Controller extends CI_Controller {
         
         for($i=0;$i<count($data);$i++)
         {
-            $h = explode("_",$data[$i]);//$h[0]=f/u,h[1]=kodetrans
+            $h = explode("_",$data[$i]);//$h[0]=f/u,h[1]=kodetrans,h[2]=kodelokasi,h[3]=tglomzet,h[4]=urutan
             if($h[0]=="f")
             {
-                $this->checker_model->update_status($h[1],'1',$tgl[0]['tglskrg']);
+                $this->checker_model->update_status($h[1],$h[2],$h[3],$h[4],'1',$tgl[0]['tglskrg']);
             }
             else
             {
-                $this->checker_model->update_status($h[1],'0','00:00:00');
+                $this->checker_model->update_status($h[1],$h[2],$h[3],$h[4],'0','00:00:00');
             }
             
         }
         
-        $data["totalmeja"] = $this->checker_model->getCountTable()[0]['total'];
         $data["totalorder"] = $this->checker_model->getCountOrder()[0]['total'];
         $data["totalfinishorder"] = $this->checker_model->getCountFinishOrder()[0]['total'];
         echo json_encode($data);
@@ -124,15 +121,14 @@ class Controller extends CI_Controller {
         $tgl = $this->checker_model->getSysdate();
         for($i=0;$i<count($data);$i++)            
         {
-            $h = explode("_",$data[$i]);//$h[0]=kodetransasksi,h[1]==nomormeja
-            $this->checker_model->update_statusmulti($h[0],$h[1],'1',$tgl[0]['tglskrg']);
-            if($meja[$ctr]!=$h[1])
+            $h = explode("_",$data[$i]);//$h[0]=f/u,h[0]=kodetrans,h[1]=kodelokasi,h[2]=tglomzet,h[3]=urutan,h[4]=nomeja
+            $this->checker_model->update_status($h[0],$h[1],$h[2],$h[3],'1',$tgl[0]['tglskrg']);
+            if($meja[$ctr]!=$h[4])
             {
                 $ctr=$ctr+1;
-                $meja[$ctr]=$h[1];
+                $meja[$ctr]=$h[4];
             }
         }
-        $meja["totalmeja"] = $this->checker_model->getCountTable()[0]['total'];
         $meja["totalorder"] = $this->checker_model->getCountOrder()[0]['total'];
         $meja["totalfinishorder"] = $this->checker_model->getCountFinishOrder()[0]['total'];
         echo json_encode($meja);
@@ -144,9 +140,9 @@ class Controller extends CI_Controller {
         echo json_encode($data);
     }
     
-    public function get_multimeja($kodemenu,$sts)
+    public function get_multimeja($kodemenu)
     {
-        $data = $this->checker_model->get_multimeja($kodemenu,$sts);
+        $data = $this->checker_model->get_multimeja($kodemenu);
         echo json_encode($data);
     }
     

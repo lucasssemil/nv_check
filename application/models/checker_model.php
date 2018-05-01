@@ -9,36 +9,39 @@ class checker_model extends CI_Model
 	}
 	
 	public function get_table(){
-		$this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status,jamfinish");
-        $this->db->order_by("nomormeja, namamenurecipe");
-		return $this->db->get("t_orderchecker")->result_array();
+        
+        $query = $this->db->query("select a.*,b.nomormeja from torderchecker a, torder b where a.kodelokasi=b.kodelokasi and a.kodetrans=b.kodetrans and a.tglomzet=b.tglomzet and a.urutanchecker=-1 order by b.nomormeja, a.namamenurecipe");
+        return $query->result_array();
+        
 	}
     
-    public function get_multimeja($kodemenu,$sts)
+    public function get_jumlahorang()
     {
-        $query = $this->db->query("SELECT NOMORMEJA,KODETRANS, count(kodetrans) as jumlah from t_orderchecker where KODEMENURECIPE='".$kodemenu."' and status=".$sts." group by KODETRANS");
+        $query =$this->db->query("select sum(JUMLAHORANG) as jumlah from torder");
+        return $query->result();
+    }
+    
+    public function get_multimeja($kodemenu)
+    {
+        $query = $this->db->query("SELECT b.NOMORMEJA,a.*, count(a.kodetrans) as jumlah from torderchecker a, torder b where a.KODEMENURECIPE='".$kodemenu."' and a.status= 0 and a.KODELOKASI=b.KODELOKASI and a.KODETRANS=b.KODETRANS and a.TGLOMZET=b.TGLOMZET group by KODETRANS");
         return $query->result_array();
     }
     
     public function get_menu($nomeja)
     {
-        $query = $this->db->query("select * from t_orderchecker where nomormeja='".$nomeja."' order by namamenurecipe");
+        $query = $this->db->query("select a.*,b.NOMORMEJA from torderchecker a, torder b where b.nomormeja='".$nomeja."' and a.KODELOKASI=b.KODELOKASI and a.KODETRANS=b.KODETRANS and a.TGLOMZET=b.TGLOMZET and a.urutanchecker=-1 order by a.namamenurecipe");
         return $query->result_array();
     }
     
     public function get_progress($nomeja)
     {
-        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status,jamfinish");
-        $this->db->where('nomormeja',$nomeja);
-        $this->db->order_by("nomormeja, namamenurecipe");
-		return $this->db->get("t_orderchecker")->result_array();
+        $query = $this->db->query("select a.kodetrans, a.tglomzet, b.nomormeja, a.namamenurecipe, a.durasi, a.jamorder, a.jamtarget, a.status, a.jamfinish from torderchecker a, torder b where b.nomormeja='".$nomeja."' and a.KODELOKASI=b.KODELOKASI and a.KODETRANS=b.KODETRANS and a.TGLOMZET=b.TGLOMZET and a.urutanchecker=-1 order by b.nomormeja, a.namamenurecipe");
+        return $query->result_array();
     }
     
     public function get_allprogress(){
-        $this->db->select("kodetrans,tanggalomset,nomormeja,namamenurecipe,jumlah,durasi,jamorder,jamtarget,status,jamfinish");
-        $this->db->where('status','0');
-        $this->db->order_by("nomormeja, namamenurecipe");
-		return $this->db->get("t_orderchecker")->result_array();
+        $query = $this->db->query("select a.kodetrans,a.tglomzet,b.nomormeja,a.namamenurecipe,a.durasi,a.jamorder,a.jamtarget,a.status,a.jamfinish from torderchecker a, torder b where a.status='0' and a.KODELOKASI=b.KODELOKASI and a.KODETRANS=b.KODETRANS and a.TGLOMZET=b.TGLOMZET and a.urutanchecker=-1 order by b.nomormeja, a.namamenurecipe");
+		return $query->result_array();
     }
     
     public function getSysdate()
@@ -47,26 +50,23 @@ class checker_model extends CI_Model
         return $query->result_array();
     }
     
-    public function update_status($kodetrans,$stat,$tgl)
-    {
+    public function update_status($kodetrans,$kodelokasi,$tglomzet,$urutan,$stat,$tgl)
+    {   
         $data = array(
-        'status' => $stat,
-        'jamfinish'=>$tgl
+            'status' => $stat,
+            'jamfinish'=>$tgl
         );
         $this->db->where('kodetrans', $kodetrans);
-        $this->db->update('t_orderchecker', $data);
+        $this->db->where('kodelokasi', $kodelokasi);
+        $this->db->where('tglomzet', $tglomzet);
+        $this->db->where('urutan', $urutan);
+        $this->db->update('torderchecker', $data);
     }
 	
     public function update_statusmulti($kodetrans,$nomeja,$stat,$tgl)
     {
-        $data = array(
-            'status'=>$stat,
-            'jamfinish'=>$tgl
-        );
-        
-        $this->db->where('kodetrans',$kodetrans);
-        $this->db->where('nomormeja',$nomeja);
-        $this->db->update('t_orderchecker',$data);
+        $query = $this->db->query("update torderchecker a, torder b set a.STATUS='".$stat."', a.jamfinish='".$tgl."' where b.NOMORMEJA=1 and b.KODELOKASI=a.KODELOKASI and a.KODETRANS=b.KODETRANS and a.TGLOMZET=b.TGLOMZET and a.kodelokasi='".$kodelokasi."' and a.kodetrans='".$kodetrans."' and a.tglomzet='".$tglomzet."' and a.urutan='".$urutan."'");
+		return $query->result_array();
     }
 	
 	public function insert_table($kodetrans, $tglomset, $nomormeja)
@@ -80,65 +80,42 @@ class checker_model extends CI_Model
 		// $ID .= str_pad($num, 3, "0", STR_PAD_LEFT);
 
 		// Insert
-		$data = array(
-			'kodetrans' => $kodetrans,
-			'tanggalomset' => $tglomset,
-			'nomormeja' => $nomormeja
-		);
-		$this->db->insert("t_orderchecker",$data);
-		return ($this->db->affected_rows() > 0);
 	}
     
-    public function getCountTable()
-    {
-        $query = $this->db->query("select count(*) as total from(select count(*) as a from t_orderchecker group by NOMORMEJA) as b");
-        return $query->result_array();
-    }
     
     public function getDataHeader()
     {
-        $query = $this->db->query("SELECT jamorder as jammasuk, count(*) as total,kodetrans  FROM t_orderchecker group by NOMORMEJA");
+        $query = $this->db->query("SELECT a.jamorder as jammasuk, count(a.KODEMENURECIPE) as total,a.kodetrans  FROM torderchecker a, torder b where a.KODELOKASI=b.KODELOKASI and a.KODETRANS=b.KODETRANS and a.TGLOMZET=b.TGLOMZET and URUTANCHECKER=-1 group by b.NOMORMEJA");
         return $query->result_array();
     }
     
     public function getCountFinishOrder()
     {
-        $query = $this->db->query("select count(*) as total from t_orderchecker where status=1");
+        $query = $this->db->query("select count(*) as total from torderchecker where status=1");
         return $query->result_array();
     }
     
     public function getCountFinish()
     {
-        $query = $this->db->query("select count(*) as totalfinish from t_orderchecker where status=1 group by nomormeja");
+        $query = $this->db->query("select count(a.kodemenurecipe) as totalfinish,b.NOMORMEJA from torderchecker a, torder b where a.status=1 and a.KODELOKASI=b.KODELOKASI and a.KODETRANS=b.KODETRANS and a.TGLOMZET=b.TGLOMZET group by b.nomormeja");
         return $query->result_array();
     }
     
     public function getCountOrder()
     {
-        $query = $this->db->query("select count(*) as total from t_orderchecker");
-        return $query->result_array();
-    }
-    
-    public function getAllDurasi()
-    {
-        $query = $this->db->query("select jamorder,durasi from t_orderchecker order by nomormeja");
+        $query = $this->db->query("select count(*) as total from torderchecker where urutanchecker=-1");
         return $query->result_array();
     }
     
     
     public function getAllMenu(){
-        $query = $this->db->query("select KODEMENURECIPE, NAMAMENURECIPE,count(NAMAMENURECIPE) as QTY from t_orderchecker group by KODEMENURECIPE order by NAMAMENURECIPE");
-        return $query->result_array();
-    }
-    
-    public function getAllMenuJAM(){
-        $query = $this->db->query("select KODEMENURECIPE, NAMAMENURECIPE,JAMORDER,DURASI,(select NOMORMEJA from t_orderchecker k where k.KODEMENURECIPE=t.KODEMENURECIPE) from t_orderchecker t order by JAMORDER");
+        $query = $this->db->query("select KODEMENURECIPE, NAMAMENURECIPE,count(NAMAMENURECIPE) as QTY from torderchecker group by KODEMENURECIPE order by NAMAMENURECIPE");
         return $query->result_array();
     }
     
     public function getReportMeja($kodemenu)
     {
-        $query = $this->db->query("select distinct(NOMORMEJA) from t_orderchecker where KODEMENURECIPE='".$kodemenu."' order by NAMAMENURECIPE");
+        $query = $this->db->query("select distinct(b.NOMORMEJA) from torderchecker a, torder b where a.KODEMENURECIPE='".$kodemenu."' where a.KODELOKASI=b.kodelokasi and a.KODETRANS= b.kodetrans and a.TGLOMZET=b.TGLOMZET order by a.NAMAMENURECIPE");
         return $query->result_array();
     }
     
