@@ -89,11 +89,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</tr>
 					<tr style="color:white;">
 						<td style="padding:0;"><i class="material-icons-sidebar">sentiment_very_satisfied</i></td>
-						<td style="padding:0;" class="font_info">20</td>
+						<td id="dashtotalhappy" style="padding:0;" class="font_info">0</td>
 						<td style="padding:0;"><i class="material-icons-sidebar">sentiment_satisfied</i></td>
-						<td style="padding:0;" class="font_info">10</td>
+						<td id="dashtotalnormal" style="padding:0;" class="font_info">0</td>
 						<td style="padding:0;"><i class="material-icons-sidebar">sentiment_very_dissatisfied</i></td>
-						<td style="padding:0;" class="font_info">5</td>
+						<td id="dashtotalsad" style="padding:0;" class="font_info">0</td>
 					</tr>
 				</tbody>
 			</table>
@@ -307,8 +307,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         return hasil
     }
     
+    var happy = 0;
+    var normal = 0;
+    var sad = 0;
+    
     function getAllData()
-    {
+    {        
         data=[];
          $.ajax({
 			type:"GET", 
@@ -340,6 +344,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         var ctr=1;
         var tmp=data[0]['nomormeja'];
         
+        happy=0;
+        normal=0;
+        sad=0;
         for(i=0;i<data.length;i++)
         {
             if(tmp!=data[i]['nomormeja'])
@@ -361,12 +368,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 progresbar=100;
                 durasi=0;
                 warnabar="red";
+                sad = sad+1;
             }
             else
             {        
                 if(progresbar<=50)
                 {
                     warnabar="yellow";
+                    normal = normal+1;
+                }
+                else{
+                    happy = happy+1;
                 }
             }
             var m = Math.floor((durasi % (1000 * 60 * 60)) / (1000 * 60));
@@ -387,6 +399,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
             ctr=ctr+1;
         }
+        
+        document.getElementById("dashtotalhappy").innerHTML = happy;
+        document.getElementById("dashtotalnormal").innerHTML = normal;
+        document.getElementById("dashtotalsad").innerHTML = sad;
+    
     }
     
     function reloaddata(nomeja)
