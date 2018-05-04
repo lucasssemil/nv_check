@@ -16,6 +16,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/js/materialize.min.js'); ?>"></script>
 	<style>
+        .collapsible li.active {
+            background-color: green;
+}
 		.collection{
 			margin: 0;
 		}
@@ -45,7 +48,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             font-family:'mythirdfont';
             src: url(<?php echo base_url('assets/fonts/arsenal-bold.otf'); ?>);
         }
+        .collIsi{
+            background: white;
+            color: black;
+            padding:2px;
+        }
+        .isi .makeScroll{
+            height: 200px;
+            overflow-y: auto;
+        }
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
 
+        /* Track */
+        .isi::-webkit-scrollbar-track {
+            background-color:transparent;
+        }
+
+        /* Handle */
+        div::-webkit-scrollbar-thumb {
+            background: lightcyan;
+        }
+        dv::-webkit-scrollbar-thumb:window-inactive {
+            background: rgba(255,0,0,0.4); 
+        }
+        ::-webkit-scrollbar-track-piece
+        {
+        }
 
         .header{
             font-family:mythirdfont;
@@ -56,30 +86,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         .barisMeja{
             height: 350px;
         }
-        .collIsi{
-            background: white;
-            color: black;
-            padding:2px;
-        }
-        .isi .makeScroll{
-            height: 200px;
-            overflow-y: auto;
-        }
-        ::-webkit-scrollbar
-        {
-            width:0px;
-        }
-        ::-webkit-scrollbar-track-piece
-        {
-            background-color:transparent;
-        }
 	</style>
 	
 </head>
 <body class="grey">
 <div id="container" class="grey">
-	<div class="row" >
-		<div class="card col m2 z-depth-1 blue-grey darken-4" style="height: 700px; font-family:myfirstfont">
+	<div class="row">
+		<div class="card col m2 z-depth-1 blue-grey darken-4" style="height: 700px; font-family:myfirstfont; position:fixed;">
 			<div class="font_clock" style="color:white; font-size:24pt; text-align:center;"><?php echo date('Y/m/d'); ?></div>
             <div class="font_clock" id="clock" style="color:white;font-size:34pt; text-align:center;">00:00:00</div>
 			<table class="col m12 ">
@@ -107,7 +120,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <a id="btnReport2" class="waves-effect waves-light btn-large col s12" style="margin-top:10%;"><i class="material-icons left">book</i>LAPORAN MENU</a>
 			
 		</div>
-		<div id="checker_container" class="col m10">
+		<div id="checker_container" class="col m10" style="margin-left:16%;">
+            <div id="loading" style="margin-top:15%; margin-left:35%;  position:fixed; z-index:-1;">
+                <div class="preloader-wrapper big active" >
+                <div class="spinner-layer spinner-red-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div><div class="gap-patch">
+                    <div class="circle"></div>
+                  </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+                <BR><B>LOADING...</B>
+            </div>
 		</div>
 	</div>
 </div>
@@ -118,10 +145,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div id="h_modal1" class="col m12 header modal-trigger waves-effect waves-light" style="overflow:hidden;">
                 <div id="m_mode" class="col m12 font_cardheader blue-grey lighten-3 " style="text-align:center; font-size:24px; color:red;">FINISH</div>
 				<div id="m_nomeja" class="col m8 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : 1</div>
-				<div class="col m4 font_cardheader blue-grey lighten-3 black-text" style="align-text: right">BILL : 567512</div>
-				<div class="col m5 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
-				<div class="col m3 font_cardheader blue-grey lighten-3 black-text" style="">14:30:00</div>
-				<div class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">00:00</div>
+				<div id="m_bill" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="align-text: right">BILL : 567512</div>
+				<div id="m_pesanan" class="col m5 font_cardheader blue-grey lighten-3 black-text" style="">1/4</div>
+				<div id="m_jam" class="col m3 font_cardheader blue-grey lighten-3 black-text" style="">14:30:00</div>
+				<div id="m_lama" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">00:00</div>
 			</div>
 		<div class="col m12" style="margin: 0px; padding:0px;">
 			<ul class="tabs tabs-fixed-width " style="overflow-x:hidden;">
@@ -183,8 +210,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <div id="modal3" class="modal modal-fixed-footer" style="width: 50%; overflow:auto;">
 	<div class="modal-content">
         <div class="row">
-			<div id="judulreport" class="col m12 modal-trigger waves-effect waves-light" style="font-size:24px; font-family:mythirdfont; text-align:center">
-                NAMA REPORT
+			<div class="col m12 modal-trigger waves-effect waves-light" style="font-size:24px; font-family:mythirdfont; text-align:center">
+                LAPORAN REKAP MENU
 			</div>
 		</div>
         <div class="col m12" style="margin: 0px; padding:0px;">
@@ -200,7 +227,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</ul>
         </div>
 	</div>
-</div>   
+</div>  
+    
+<!-- modal 4-->    
+<div id="modal4" class="modal modal-fixed-footer" style="width: 50%; overflow:auto;">
+	<div class="modal-content">
+        <div class="row">
+			<div class="col m12 modal-trigger waves-effect waves-light" style="font-size:24px; font-family:mythirdfont; text-align:center">
+                 LAPORAN MENU
+			</div>
+		</div>
+        <div class="col m12" style="margin: 0px; padding:0px;">
+            <div class="row" style="font-family:mythirdfont;">
+                <div class="col s4">NAMA MENU RECIPE</div>
+                <div class="col s2">TABLE</div>
+                <div class="col s4">JAM ORDER</div>
+                <div class="col s2">DURASI</div>
+            </div>
+        </div>
+		<div class="col m12" style="margin: 0px; padding:0px;">
+            <ul id="listmodal41" class="collection white font_cardlist scrollable_list" style="font-family:mysecondfont;">
+				
+			</ul>
+        </div>
+	</div>
+</div>  
     
 <script>
 
@@ -315,10 +366,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     var happy = 0;
     var normal = 0;
     var sad = 0;
+    var durasimeja;
+    var nomeja;
     
     function getAllData()
     {        
         data=[];
+        durasimeja=[];
+       
+        
          $.ajax({
 			type:"GET", 
 			dataType: 'json',
@@ -334,7 +390,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 data[i]["durasi"]=result[i]["durasi"];
                 data[i]["jamorder"]=result[i]["jamorder"];
             }
-        
+             for(i=0;i<nomeja.length;i++)
+            {
+                var d1 = document.getElementById("hjam"+nomeja[i]).innerHTML;
+                var d2 = d1.split(":");//d2[0]=jam,d2[1]=menit,d2[2]=detik masuk
+                now = new Date().getTime();
+                var h = new Date().getHours();
+                var m = Math.floor((now % (1000 * 60 * 60)) / (1000 * 60));
+                var s = Math.floor((now % (1000 * 60)) / 1000);
+                var hs = h-d2[0];
+                var ms = m-d2[1];
+                var ss = s-d2[2];
+                if(ms<0 && hs>0)
+                {
+                    hs = hs-1;
+                    ms = ms+60;
+                }
+                if(ss<0 && ms >0)
+                {
+                    ms = ms-1;
+                    ss = ss+60;
+                }
+                d1= hs+":"+ms+":"+ss;
+                durasimeja[i]=d1;
+            }
                 
 			}, error: function(msg){
 				alert('Ambil data Error');
@@ -348,6 +427,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         var warnabar="";
         var ctr=1;
         var tmp=data[0]['nomormeja'];
+        
+        var t = document.getElementById("dashtotalmeja").innerHTML
+        for(i=0;i<nomeja.length;i++)
+        {
+            var d1 = durasimeja[i].split(":");//d1[0]=jam,d1[1]=menit,d1[2]=detik lama meja
+            d1[2] = parseInt(d1[2])+1;
+            if(d1[2]>=60)
+            {
+                d1[1]= parseInt(d1[1])+1;
+                d1[2]= parseInt(d1[2])-60;
+                if(d1[1]>=60)
+                {
+                    d1[0]=parseInt(d1[0])+1;
+                    d1[1]= parseInt(d1[1])-60;
+                }
+            }
+            durasimeja[i] = d1[0]+":"+d1[1]+":"+d1[2];
+           document.getElementById("hlama"+nomeja[i]).innerHTML = durasimeja[i];
+        }
         
         happy=0;
         normal=0;
@@ -398,6 +496,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             document.getElementById("countdowna"+data[i]['nomormeja']+ctr).innerHTML = m+":"+s;
             if(data[i]['nomormeja']==myElements && boolWindowModal)
             {
+                document.getElementById("m_lama").innerHTML = document.getElementById("hlama"+myElements).innerHTML;
                 document.getElementById("pBM"+myElements+ctr).style.width = progresbar+"%";
                 document.getElementById("pBM"+myElements+ctr).style.backgroundColor = warnabar;
                 document.getElementById("countdownM"+myElements+ctr).innerHTML = m+":"+s;
@@ -408,6 +507,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         document.getElementById("dashtotalhappy").innerHTML = happy;
         document.getElementById("dashtotalnormal").innerHTML = normal;
         document.getElementById("dashtotalsad").innerHTML = sad;
+         document.getElementById("loading").style.visibility = "hidden";
     
     }
     
@@ -421,7 +521,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			success :function(result){
 				//$('#container').html(JSON.stringify(result));
                 //$('#test'+result[0]['nomormeja']+'1').html(JSON.stringify(result));
-                //alert(result.length);
+                //alert(totmeja);
                 for(i=0;i<result.length;i++){
                     $('#list'+result[i]['nomormeja']+'1').empty();
                     $('#list'+result[i]['nomormeja']+'3').empty();
@@ -447,7 +547,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         tmp=result[i]['nomormeja'];
                     }
                     //mengeluarkan list pesanan
-                    if(result[i]['URUTANCHECKER']==-1){
+                     if(result[i]['URUTANCHECKER']==-1){
                         if (result[i]['status']==0){
                             $('#list'+result[i]['nomormeja']+'3').append('<li class="collection-item ">'+
                             '<div class="collIsi collapsible-header" style="padding:2px;"><div class="col m9 ">'+result[i]['namamenurecipe']+'</div>'+
@@ -466,7 +566,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             '<ul id="listModif'+result[i]['URUTAN']+result[i]['nomormeja']+'1" class="collection white font_cardlist  scrollable_list"></ul>'+
                             '</div>'+
                             '<div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
-                            ctr = ctr+1;   
+                            ctr = ctr+1;  
                         }
                        if(result[i]['status']==1){
                             var sisawaktu = hitungSisawaktu(result[i]['jamtarget'],result[i]['jamfinish']);
@@ -482,24 +582,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             '</li>');
                            tmpfinish = tmpfinish+1;
                         }
+                        tmptotal=tmptotal+1; 
                     }else{
                         var temp=str = result[i]['namamenurecipe'].replace(/\s/g, '');
                         //alert(temp);
-                        $('#listModif'+result[i]['URUTANCHECKER']+result[i]['nomormeja']+'1').append('<li class="collection-item "><span>'+
+                        $('#listModif'+result[i]['URUTANCHECKER']+result[i]['nomormeja']+'1').append('<li class="collection-item "><span style="margin-left:13%">'+
                         temp+
                         '</span></li>');
                         
-                        $('#listModif'+result[i]['URUTANCHECKER']+result[i]['nomormeja']+'3').append('<li class="collection-item "><span>'+
+                        $('#listModif'+result[i]['URUTANCHECKER']+result[i]['nomormeja']+'3').append('<li class="collection-item "><span style="margin-left:13%">'+
                         temp+
                         '</span></li>');
                         
-                        $('#listModif'+result[i]['URUTANCHECKER']+result[i]['nomormeja']+'2').append('<li class="collection-item "><span>'+
+                        $('#listModif'+result[i]['URUTANCHECKER']+result[i]['nomormeja']+'2').append('<li class="collection-item "><span style="margin-left:13%">'+
                         temp+
                         '</span></li>');
                         //alert(result[i]['namamenurecipe']+"urutan "+result[i]['URUTANCHECKER']);
                     }
-                    tmptotal=tmptotal+1;
-                    
                     document.getElementById("hmenu"+result[i]['nomormeja']).innerHTML = tmpfinish+"/"+tmptotal;
                     
                     //alert("meja"+tmp+"ctr"+ctr);    
@@ -512,7 +611,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     }
     
 	function reloadalldata(){
-		//alert('a1');
+		//alert('a1'); 
 		$.ajax({
 			type:"GET", 
 			dataType: 'json',
@@ -533,12 +632,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 var ctr=1;
                 var ctrmeja=1;
                 
+                
                 //untuk inisiasi variabel progressbar dan countdown
                 ctr=1;
                 var ctr2=0;
                 var tmpfinish=0;
                 var tmptotal=0;
                 tmp=result['datameja'][0]['nomormeja'];
+                nomeja=[];
+                nomeja[ctr2]=tmp;
                 for(i=0;i<result['datameja'].length;i++){
                     if(tmp!=result['datameja'][i]['nomormeja'])
                     { 
@@ -547,6 +649,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         tmpfinish=0;
                         ctr2=ctr2+1;
                         tmp=result['datameja'][i]['nomormeja'];
+                        nomeja[ctr2]=tmp;
                         ctrmeja++;
                         if(ctrmeja%4==1){
                             ctrrow++;
@@ -561,7 +664,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         }
                             $('#rowid'+ctrrow).append('<div id="meja'+result['datameja'][i]['nomormeja']+'" class="card-panel col m3 blue-grey lighten-3 z-depth-1" style="padding: 5px; margin: 0.5rem 0rem 0.1rem 0rem;">'+
                         '<div class="meja row2 modal-trigger waves-effe  ct waves-light header" name="'+result['datameja'][i]['nomormeja']+'" style="" href="#modal1">'+
-                            '<div class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : '+result['datameja'][i]['nomormeja']+'</div>'+
+                            '<div id="hmeja'+result['datameja'][i]['nomormeja']+'" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">TABLE : '+result['datameja'][i]['nomormeja']+'</div>'+
                             '<div id="hbill'+result['datameja'][i]['nomormeja']+'" class="col m6 font_cardheader blue-grey lighten-3 black-text" style="">BILL : '+result['dataheader'][ctr2]['kodetrans']+'</div>'+
                             '<div id="hmenu'+result['datameja'][i]['nomormeja']+'" class="col m4 font_cardheader blue-grey lighten-3 black-text" style=""></div>'+
                             '<div id="hjam'+result['datameja'][i]['nomormeja']+'" class="col m4 font_cardheader blue-grey lighten-3 black-text" style="">'+result['datameja'][i]['JAMORDER']+'</div>'+
@@ -603,14 +706,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     }
                     if(result['datameja'][i]['URUTANCHECKER']==-1){
                         if (result['datameja'][i]['STATUS']==0){
-                            $('#list'+result['datameja'][i]['nomormeja']+'3').append('<li class="collection-item ">'+
+                            $('#list'+result['datameja'][i]['nomormeja']+'3').append('<li class="collection-item">'+
                             '<div class="collIsi collapsible-header" style="padding:2px;"><div class="col m9 ">'+result['datameja'][i]['NAMAMENURECIPE']+'</div>'+
                             '<div id="countdowna'+result['datameja'][i]['nomormeja']+ctr+'" class="col m2">0:0</div>'+
                             '</div>'+
                             '<div class="collIsi collapsible-body">'+
                             '<ul id="listModif'+result['datameja'][i]['URUTAN']+result['datameja'][i]['nomormeja']+'3" class="collection white font_cardlist  scrollable_list"></ul>'+
                             '</div>'+
-                            '<div class="progress "><div id="pBa'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
+                            '<div class="progress "  style="background-color:white;"><div id="pBa'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
 
                             $('#list'+result['datameja'][i]['nomormeja']+'1').append('<li class="collection-item ">'+
                             '<div class="collIsi collapsible-header" style="padding:2px;"><div class="col m9 ">'+result['datameja'][i]['NAMAMENURECIPE']+'</div>'+
@@ -619,7 +722,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             '<div class="collIsi collapsible-body">'+
                             '<ul id="listModif'+result['datameja'][i]['URUTAN']+result['datameja'][i]['nomormeja']+'1" class="collection white font_cardlist  scrollable_list"></ul>'+
                             '</div>'+
-                            '<div class="progress "><div id="pB'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
+                            '<div class="progress" style="background-color:white;"><div id="pB'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
                             ctr = ctr+1;   
                         }
                        if(result['datameja'][i]['STATUS']==1){
@@ -636,23 +739,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             '</li>');
                            tmpfinish = tmpfinish+1;
                         }
+                        
+                            tmptotal = tmptotal+1;
                     }else{
                         var temp=result['datameja'][i]['NAMAMENURECIPE'].replace(/\s/g, '');
                         //alert(temp);
-                        $('#listModif'+result['datameja'][i]['URUTANCHECKER']+result['datameja'][i]['nomormeja']+'1').append('<li class="collection-item "><span>'+
+                        $('#listModif'+result['datameja'][i]['URUTANCHECKER']+result['datameja'][i]['nomormeja']+'1').append('<li class="collection-item "><span style="margin-left:13%">'+
                         temp+
                         '</span></li>');
                         
-                        $('#listModif'+result['datameja'][i]['URUTANCHECKER']+result['datameja'][i]['nomormeja']+'3').append('<li class="collection-item "><span>'+
+                        $('#listModif'+result['datameja'][i]['URUTANCHECKER']+result['datameja'][i]['nomormeja']+'3').append('<li class="collection-item "><span style="margin-left:13%">'+
                         temp+
                         '</span></li>');
                         
-                        $('#listModif'+result['datameja'][i]['URUTANCHECKER']+result['datameja'][i]['nomormeja']+'2').append('<li class="collection-item "><span>'+
+                        $('#listModif'+result['datameja'][i]['URUTANCHECKER']+result['datameja'][i]['nomormeja']+'2').append('<li class="collection-item "><span style="margin-left:13%">'+
                         temp+
                         '</span></li>');
                         //alert(result['datameja'][i]['NAMAMENURECIPE']+"urutan "+result['datameja'][i]['URUTANCHECKER']);
                     }
-                            tmptotal = tmptotal+1;
                     
                     $('.collapsible').collapsible();
                     $tabs.tabs().tabs('select_tab', 'test'+result['datameja'][i]['nomormeja']+'2');
@@ -662,33 +766,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     document.getElementById("hmenu"+result['datameja'][i]['nomormeja']).innerHTML = tmpfinish+"/"+tmptotal;
                 }
                 totalmeja=ctrmeja;
-                
                 document.getElementById("dashtotalmeja").innerHTML = totalmeja;
                 document.getElementById("dashtotalorang").innerHTML = result['totalorang'][0]['jumlah'];
+                getAllData(); 
                 
 			}, error: function(msg){
 				alert('Reload Data Error');
 			}
 		});
-        getAllData();
 	}
     
 	 $(document).ready(function(){
 	// // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
          
          $('.modal').modal();
-         
         //modal 1
        $(document).on("click", ".meja", function () {
         boolWindowModal=true;
         myElements = $(this).attr('name');//dapetin nomor meja
-        $.ajax({
+         $.ajax({
 			type:"GET", 
 			dataType: 'json',
 			url: "<?php echo site_url(); ?>" + "/Controller/get_menu/"+myElements, 
 			data:{ "mode":"resep" },                                     
 			success :function(result){
-                document.getElementById("m_nomeja").innerHTML = "TABLE : "+result[0]['NOMORMEJA'];
+                document.getElementById("m_nomeja").innerHTML = document.getElementById("hmeja"+result[0]['NOMORMEJA']).innerHTML;
+                document.getElementById("m_bill").innerHTML = document.getElementById("hbill"+result[0]['NOMORMEJA']).innerHTML;
+                document.getElementById("m_jam").innerHTML = document.getElementById("hjam"+result[0]['NOMORMEJA']).innerHTML;
+                document.getElementById("m_pesanan").innerHTML = document.getElementById("hmenu"+result[0]['NOMORMEJA']).innerHTML;
                 $('#listmodal').empty();
                 $('#listmodal2').empty();
                 totaldatamodal=result.length;
@@ -717,7 +822,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                                 str = '<li class="collection-item ">'
                                         +'<div class="row">'
-                                            +'<div class="col s8 menu modal-trigger waves-effe" name="'+result[i]['NAMAMENURECIPE']+"_"+result[i]['KODEMENURECIPE']+'" href="#modal2">'+temp+'</div>'
+                                            +'<div class="col s8 menu modal-trigger waves-effe" style="text-align:center;" name="'+result[i]['NAMAMENURECIPE']+"_"+result[i]['KODEMENURECIPE']+'" href="#modal2">'+temp+'</div>'
                                             +'<div id="countdownM'+myElements+ctr2+'" class="col s2">00:00</div>'
                                             +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="f_'+result[i]['KODETRANS']+'_'+result[i]['KODELOKASI']+'_'+result[i]['TGLOMZET']+'_'+result[i]['URUTAN']+'" /><label for="cb'+i+'"></label></div>'
                                         +'</div>'
@@ -733,7 +838,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 var sisawaktu = hitungSisawaktu(result[i]['JAMTARGET'],result[i]['JAMFINISH']);
                                  str = '<li class="collection-item ">'
                                         +'<div class="row">'
-                                            +'<div class="col s8">'+temp+'</div>'
+                                            +'<div class="col s8" style="text-align:center;">'+temp+'</div>'
                                             +'<div class="col s2">'+sisawaktu+'</div>'
                                             +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="u_'+result[i]['KODETRANS']+'_'+result[i]['KODELOKASI']+'_'+result[i]['TGLOMZET']+'_'+result[i]['URUTAN']+'"/><label for="cb'+i+'"></label></div>'
                                         +'</div>'
@@ -751,14 +856,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     });
          
     $(document).on("click", "#btnReport1", function(){
-        document.getElementById("judulreport").innerHTML = "LAPORAN REKAP MENU";
+        $('#listmodal31').empty();
+        get_report_data1();
         $("#modal3").modal("open");
-
-        
     });
-    $(document).on("click", "#btnReport2", function(){
-        document.getElementById("judulreport").innerHTML = "LAPORAN MENU";
-        $("#modal3").modal("open");
+    $(document).on("click", "#btnReport2", function(){ 
+        $('#listmodal41').empty();
+        get_report_data2();
+        $("#modal4").modal("open");
     }); 
     function get_report_data1(){
         $.ajax({
@@ -769,7 +874,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		success :function(result){
             for(i=0;i<result.length;i++)
             {
-                var str = '<li class="collection-item ">'
+                var str = '<li class="collection-item">'
                                 +'<div class="row">'
                                     +'<div class="col s6 menu">'+result[i]['NAMAMENURECIPE']+'</div>'
                                     +'<div class="col s2 menu">'+result[i]['QTY']+'</div>'
@@ -777,12 +882,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 +'</div>'
                             +'</li>'; 
                 $("#listmodal31").append(str);
-                    
             }
-            
-        }
+        },
+            error: function(msg){
+				alert('Reload Modal 3 Error');
+			}
        });
     } 
+         
+    function get_report_data2(){
+        $.ajax({
+		type:"GET", 
+		dataType: 'json',
+		url: "<?php echo site_url(); ?>" + "/Controller/getReport2/", 
+		data:{ "mode":"resep" },                                     
+		success :function(result){
+            var tempnama= "";
+            var ctr=0;
+            var warna="yellow";
+            for(i=0;i<result.length;i++)
+            {
+                var nama="";
+                if(tempnama!=result[i]['NAMAMENURECIPE'])
+                {
+                    if(ctr%2==0)
+                    {
+                        warna="lightcyan";
+                    }
+                    else
+                    {
+                        warna="white";        
+                    }
+                    ctr= ctr+1;
+                    tempnama=result[i]['NAMAMENURECIPE'];
+                    nama = result[i]['NAMAMENURECIPE'];
+                }
+                var str ='<li class="collection-item" style="background-color:'+warna+';">'
+                             +'<div class="row" >'
+                             +'<div class="col s4">'+nama+'</div>'
+                             +'<div class="col s2">'+result[i]['NOMORMEJA']+'</div>'
+                             +'<div class="col s4">'+result[i]['JAMORDER']+'</div>'
+                             +'<div class="col s2">'+result[i]['DURASI']+'</div>'
+                         +'</div>';
+                        +'</li>'; 
+                $("#listmodal41").append(str);
+            }
+        },
+            error: function(msg){
+				alert('Reload Modal 4 Error');
+			}
+       });
+    }
     //modal 2
     $(document).on("click", ".menu", function () {
        
@@ -831,7 +981,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
         }
        hasil = hasil.substring(0,hasil.length-1);
-       //alert("submitmodal-"+hasil);
         $.ajax({
 			type:"post", 
             dataType:"json",
@@ -896,7 +1045,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('ul.tabs').tabs({
 		swipeable : false
 	});
-        get_report_data1(); 
 		reloadalldata();
 	// //$('ul.tabs').tabs('select_tab', 'tab_id');
  });

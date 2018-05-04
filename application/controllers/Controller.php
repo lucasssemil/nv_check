@@ -67,7 +67,6 @@ class Controller extends CI_Controller {
 		$data['datameja'] = $this->checker_model->get_table();
         $data['dataheader'] = $this->checker_model->getDataHeader();
         $data['totalorang'] = $this->checker_model->get_jumlahorang();
-        //$data['keterangan'] = $this->checker_model->getModif();
 		echo json_encode($data);
         //echo "sfsdf";
         //$json = json_decode($data, true);
@@ -150,18 +149,23 @@ class Controller extends CI_Controller {
     public function getReport1()
     {
         $data = $this->checker_model->getAllmenu();
-        
         for($i=0;$i<count($data);$i++)
         {
             $test = $this->checker_model->getReportMeja($data[$i]["KODEMENURECIPE"]);
             $data[$i]["listmeja"]="";
             for($j=0;$j<count($test);$j++)
             {
-                $data[$i]["listmeja"] = $data[$i]["listmeja"].",".$test[$j]["NOMORMEJA"];   
+                $data[$i]["listmeja"] = $data[$i]["listmeja"].", ".$test[$j]["NOMORMEJA"];   
             }
-            $data[$i]["listmeja"] = substr($data[$i]["listmeja"],1);
+            $data[$i]["listmeja"] = substr($data[$i]["listmeja"],2);
         }
         
+        echo json_encode($data);
+    }
+    
+    public function getReport2()
+    {
+        $data = $this->checker_model->getReport2();
         echo json_encode($data);
     }
 }
