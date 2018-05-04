@@ -67,6 +67,7 @@ class Controller extends CI_Controller {
 		$data['datameja'] = $this->checker_model->get_table();
         $data['dataheader'] = $this->checker_model->getDataHeader();
         $data['totalorang'] = $this->checker_model->get_jumlahorang();
+        //$data['keterangan'] = $this->checker_model->getModif();
 		echo json_encode($data);
         //echo "sfsdf";
         //$json = json_decode($data, true);

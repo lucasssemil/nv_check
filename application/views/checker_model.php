@@ -10,7 +10,7 @@ class checker_model extends CI_Model
 	
 	public function get_table(){
         
-        $query = $this->db->query("select a.*,b.nomormeja from torderchecker a, torder b where a.kodelokasi=b.kodelokasi and a.kodetrans=b.kodetrans and a.tglomzet=b.tglomzet order by b.nomormeja, a.namamenurecipe");
+        $query = $this->db->query("select a.*,b.nomormeja from torderchecker a, torder b where a.kodelokasi=b.kodelokasi and a.kodetrans=b.kodetrans and a.tglomzet=b.tglomzet and a.urutanchecker=-1 order by b.nomormeja, a.namamenurecipe");
         return $query->result_array();
         
 	}
@@ -29,13 +29,13 @@ class checker_model extends CI_Model
     
     public function get_menu($nomeja)
     {
-        $query = $this->db->query("select a.*,b.NOMORMEJA from torderchecker a, torder b where b.nomormeja='".$nomeja."' and a.KODELOKASI=b.KODELOKASI and a.KODETRANS=b.KODETRANS and a.TGLOMZET=b.TGLOMZET order by a.namamenurecipe");
+        $query = $this->db->query("select a.*,b.NOMORMEJA from torderchecker a, torder b where b.nomormeja='".$nomeja."' and a.KODELOKASI=b.KODELOKASI and a.KODETRANS=b.KODETRANS and a.TGLOMZET=b.TGLOMZET and a.urutanchecker=-1 order by a.namamenurecipe");
         return $query->result_array();
     }
     
     public function get_progress($nomeja)
     {
-        $query = $this->db->query("select a.kodetrans, a.tglomzet, b.nomormeja, a.namamenurecipe, a.durasi, a.jamorder, a.jamtarget, a.status, a.jamfinish,a.URUTANCHECKER,a.URUTAN from torderchecker a, torder b where b.nomormeja='".$nomeja."' and a.KODELOKASI=b.KODELOKASI and a.KODETRANS=b.KODETRANS and a.TGLOMZET=b.TGLOMZET order by b.nomormeja, a.namamenurecipe");
+        $query = $this->db->query("select a.kodetrans, a.tglomzet, b.nomormeja, a.namamenurecipe, a.durasi, a.jamorder, a.jamtarget, a.status, a.jamfinish from torderchecker a, torder b where b.nomormeja='".$nomeja."' and a.KODELOKASI=b.KODELOKASI and a.KODETRANS=b.KODETRANS and a.TGLOMZET=b.TGLOMZET and a.urutanchecker=-1 order by b.nomormeja, a.namamenurecipe");
         return $query->result_array();
     }
     
@@ -118,14 +118,6 @@ class checker_model extends CI_Model
         $query = $this->db->query("select distinct(b.NOMORMEJA) from torderchecker a, torder b where a.KODEMENURECIPE='".$kodemenu."' where a.KODELOKASI=b.kodelokasi and a.KODETRANS= b.kodetrans and a.TGLOMZET=b.TGLOMZET order by a.NAMAMENURECIPE");
         return $query->result_array();
     }
-//    public function getModif(){
-//        $query = $this->db->query("select NAMAMENURECIPE,URUTAN,URUTANCHECKER from torderchecker where URUTANCHECKER!=-1 order by URUTAN");
-//        return $query->result_array();
-//    }
-//    
-//        public function getModifSpec($urutan){
-//        $query = $this->db->query("select NAMAMENURECIPE,URUTAN from torderchecker where URUTANCHECKER=".$urutan." order by URUTAN");
-//        return $query->result_array();
-//    }
+    
 }
 ?>

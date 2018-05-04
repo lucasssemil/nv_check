@@ -45,20 +45,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             font-family:'mythirdfont';
             src: url(<?php echo base_url('assets/fonts/arsenal-bold.otf'); ?>);
         }
-		
-        .strikeout {
-            line-height: 1em;
-            position: relative;
-        }
-        .strikeout::after {
-          border-bottom: 0.125em solid black;
-          content: "";
-          left: 5%;
-          margin-top: calc(0.125em / 2 * -1);
-          position: absolute;
-          right: 25%;
-          top: 50%;
-        }
+
+
         .header{
             font-family:mythirdfont;
         }
@@ -67,6 +55,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
         .barisMeja{
             height: 350px;
+        }
+        .collIsi{
+            background: white;
+            color: black;
+            padding:2px;
+        }
+        .isi .makeScroll{
+            height: 200px;
+            overflow-y: auto;
+        }
+        ::-webkit-scrollbar
+        {
+            width:0px;
+        }
+        ::-webkit-scrollbar-track-piece
+        {
+            background-color:transparent;
         }
 	</style>
 	
@@ -416,7 +421,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			success :function(result){
 				//$('#container').html(JSON.stringify(result));
                 //$('#test'+result[0]['nomormeja']+'1').html(JSON.stringify(result));
-                //alert(totmeja);
+                //alert(result.length);
                 for(i=0;i<result.length;i++){
                     $('#list'+result[i]['nomormeja']+'1').empty();
                     $('#list'+result[i]['nomormeja']+'3').empty();
@@ -442,16 +447,56 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         tmp=result[i]['nomormeja'];
                     }
                     //mengeluarkan list pesanan
-                     if (result[i]['status']==0){
-                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdowna'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pBa'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
-                        $('#test'+result[i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9 ">'+result[i]['namamenurecipe']+'</div><div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
-                        ctr = ctr+1;
-                    } 
-                    if(result[i]['status']==1){
-                        var sisawaktu = hitungSisawaktu(result[i]['jamtarget'],result[i]['jamfinish']);
-                        $('#test'+result[i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result[i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
-                        $('#test'+result[i]['nomormeja']+'2 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result[i]['namamenurecipe']+'</div><div>'+sisawaktu+'</div></li>');
-                        tmpfinish = tmpfinish+1;
+                    if(result[i]['URUTANCHECKER']==-1){
+                        if (result[i]['status']==0){
+                            $('#list'+result[i]['nomormeja']+'3').append('<li class="collection-item ">'+
+                            '<div class="collIsi collapsible-header" style="padding:2px;"><div class="col m9 ">'+result[i]['namamenurecipe']+'</div>'+
+                            '<div id="countdowna'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div>'+
+                            '</div>'+
+                            '<div class="collIsi collapsible-body">'+
+                            '<ul id="listModif'+result[i]['URUTAN']+result[i]['nomormeja']+'3" class="collection white font_cardlist  scrollable_list"></ul>'+
+                            '</div>'+
+                            '<div class="progress "><div id="pBa'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
+
+                            $('#list'+result[i]['nomormeja']+'1').append('<li class="collection-item ">'+
+                            '<div class="collIsi collapsible-header" style="padding:2px;"><div class="col m9 ">'+result[i]['namamenurecipe']+'</div>'+
+                            '<div id="countdown'+result[i]['nomormeja']+ctr+'" class="col m2">0:0</div>'+
+                            '</div>'+
+                            '<div class="collIsi collapsible-body">'+
+                            '<ul id="listModif'+result[i]['URUTAN']+result[i]['nomormeja']+'1" class="collection white font_cardlist  scrollable_list"></ul>'+
+                            '</div>'+
+                            '<div class="progress "><div id="pB'+result[i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
+                            ctr = ctr+1;   
+                        }
+                       if(result[i]['status']==1){
+                            var sisawaktu = hitungSisawaktu(result[i]['jamtarget'],result[i]['jamfinish']);
+                            $('#list'+result[i]['nomormeja']+'3').append('<li class="collection-item "><div class="collIsi collapsible-header" style="padding:2px;"><div class="col m9"><strike>'+result[i]['namamenurecipe']+'</strike></div><div class="col m2">'+sisawaktu+'</div></div>'+
+                            '<div class="collIsi collapsible-body">'+
+                            '<ul id="listModif'+result[i]['URUTAN']+result[i]['nomormeja']+'3" class="collection white font_cardlist  scrollable_list"></ul>'+
+                            '</div>'+
+                            '</li>');
+                            $('#list'+result[i]['nomormeja']+'2').append('<li class="collection-item "><div class="collIsi collapsible-header" style="padding:2px;"><div class="col m9"><strike>'+result[i]['namamenurecipe']+'</strike></div><div class="col m2">'+sisawaktu+'</div></div>'+
+                            '<div class="collIsi collapsible-body">'+
+                            '<ul id="listModif'+result[i]['URUTAN']+result[i]['nomormeja']+'2" class="collection white font_cardlist  scrollable_list"></ul>'+
+                            '</div>'+
+                            '</li>');
+                           tmpfinish = tmpfinish+1;
+                        }
+                    }else{
+                        var temp=str = result[i]['namamenurecipe'].replace(/\s/g, '');
+                        //alert(temp);
+                        $('#listModif'+result[i]['URUTANCHECKER']+result[i]['nomormeja']+'1').append('<li class="collection-item "><span>'+
+                        temp+
+                        '</span></li>');
+                        
+                        $('#listModif'+result[i]['URUTANCHECKER']+result[i]['nomormeja']+'3').append('<li class="collection-item "><span>'+
+                        temp+
+                        '</span></li>');
+                        
+                        $('#listModif'+result[i]['URUTANCHECKER']+result[i]['nomormeja']+'2').append('<li class="collection-item "><span>'+
+                        temp+
+                        '</span></li>');
+                        //alert(result[i]['namamenurecipe']+"urutan "+result[i]['URUTANCHECKER']);
                     }
                     tmptotal=tmptotal+1;
                     
@@ -487,7 +532,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 var tmp =0;
                 var ctr=1;
                 var ctrmeja=1;
-                
                 
                 //untuk inisiasi variabel progressbar dan countdown
                 ctr=1;
@@ -534,35 +578,83 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     '<li class="tab col m4"><a href="#test'+result['datameja'][i]['nomormeja']+'3"><i class="material-icons-card">dashboard</i></a></li>'+
                                 '</ul>'+
                             '</div>');
-                    $('#rowlist'+result['datameja'][i]['nomormeja']).append('<div id="test'+result['datameja'][i]['nomormeja']+'1" class="col m12" style="margin: 0px; padding:0px;">'+
-                                '<ul id="list'+result['datameja'][i]['nomormeja']+'1" class="collection white font_cardlist scrollable_list" style="">'+
+                    $('#rowlist'+result['datameja'][i]['nomormeja']).append('<div id="test'+result['datameja'][i]['nomormeja']+'1" class="col m12  makeScroll" style="margin: 0px; padding:0px; overflow-y:auto;">'+
+                                '<ul id="list'+result['datameja'][i]['nomormeja']+'1" class="collection white font_cardlist collapsible scrollable_list" style="">'+
                                 '</ul>'+
                             '</div>');
-                    $('#rowlist'+result['datameja'][i]['nomormeja']).append('<div id="test'+result['datameja'][i]['nomormeja']+'2" class="col m12" style="margin: 0px; padding:0px;">'+
-                                '<ul id="list'+result['datameja'][i]['nomormeja']+'2" class="collection white font_cardlist scrollable_list">'+
+                    $('#rowlist'+result['datameja'][i]['nomormeja']).append('<div id="test'+result['datameja'][i]['nomormeja']+'2" class="col m12 makeScroll" style="margin: 0px; padding:0px;overflow-y:auto;"" style="margin: 0px; padding:0px;">'+
+                                '<ul id="list'+result['datameja'][i]['nomormeja']+'2" class="collection white font_cardlist collapsible scrollable_list">'+
                                 '</ul>'+
                             '</div>');
-                    $('#rowlist'+result['datameja'][i]['nomormeja']).append('<div id="test'+result['datameja'][i]['nomormeja']+'3" class="col m12" style="margin: 0px; padding:0px;">'+
-                                '<ul id="list'+result['datameja'][i]['nomormeja']+'3" class="collection white font_cardlist scrollable_list">'+
+                    $('#rowlist'+result['datameja'][i]['nomormeja']).append('<div id="test'+result['datameja'][i]['nomormeja']+'3" class="col m12 makeScroll" style="margin: 0px; padding:0px;overflow-y:auto;"" style="margin: 0px; padding:0px;">'+
+                                '<ul id="list'+result['datameja'][i]['nomormeja']+'3" class="collection white font_cardlist collapsible scrollable_list">'+
                                 '</ul>'+
                             '</div>');
                         
                     var $tabs = $('#tabs'+result['datameja'][i]['nomormeja']);
-                    $tabs.children().removeAttr('style'); 
+                    $tabs.children().removeAttr('style');   
+                    var parent = document.getElementById('#rowlist'+result['datameja'][i]['nomormeja']);
+                    var child = document.getElementById('test'+result['datameja'][i]['nomormeja']+'1');
+                    child.style.right = child.clientWidth - child.offsetWidth + "px";
+                     child = document.getElementById('test'+result['datameja'][i]['nomormeja']+'2');
+                    child.style.right = child.clientWidth - child.offsetWidth + "px";
+                     child = document.getElementById('test'+result['datameja'][i]['nomormeja']+'3');
+                    child.style.right = child.clientWidth - child.offsetWidth + "px";
                     }
-                    if (result['datameja'][i]['STATUS']==0){
-                        $('#test'+result['datameja'][i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="col m9 ">'+result['datameja'][i]['NAMAMENURECIPE']+'</div><div id="countdowna'+result['datameja'][i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pBa'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
-                        $('#test'+result['datameja'][i]['nomormeja']+'1 ul').append('<li class="collection-item "><div class="col m9 ">'+result['datameja'][i]['NAMAMENURECIPE']+'</div><div id="countdown'+result['datameja'][i]['nomormeja']+ctr+'" class="col m2">0:0</div><div class="progress "><div id="pB'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
-                        ctr = ctr+1;   
-                    } 
-                   if(result['datameja'][i]['STATUS']==1){
-                        var sisawaktu = hitungSisawaktu(result['datameja'][i]['JAMTARGET'],result['datameja'][i]['JAMFINISH']);
-                        $('#test'+result['datameja'][i]['nomormeja']+'3 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result['datameja'][i]['NAMAMENURECIPE']+'</div><div>'+sisawaktu+'</div></li>');
-                        $('#test'+result['datameja'][i]['nomormeja']+'2 ul').append('<li class="collection-item "><div class="strikeout col m9">'+result['datameja'][i]['NAMAMENURECIPE']+'</div><div>'+sisawaktu+'</div></li>');
-                       tmpfinish = tmpfinish+1;
+                    if(result['datameja'][i]['URUTANCHECKER']==-1){
+                        if (result['datameja'][i]['STATUS']==0){
+                            $('#list'+result['datameja'][i]['nomormeja']+'3').append('<li class="collection-item ">'+
+                            '<div class="collIsi collapsible-header" style="padding:2px;"><div class="col m9 ">'+result['datameja'][i]['NAMAMENURECIPE']+'</div>'+
+                            '<div id="countdowna'+result['datameja'][i]['nomormeja']+ctr+'" class="col m2">0:0</div>'+
+                            '</div>'+
+                            '<div class="collIsi collapsible-body">'+
+                            '<ul id="listModif'+result['datameja'][i]['URUTAN']+result['datameja'][i]['nomormeja']+'3" class="collection white font_cardlist  scrollable_list"></ul>'+
+                            '</div>'+
+                            '<div class="progress "><div id="pBa'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
+
+                            $('#list'+result['datameja'][i]['nomormeja']+'1').append('<li class="collection-item ">'+
+                            '<div class="collIsi collapsible-header" style="padding:2px;"><div class="col m9 ">'+result['datameja'][i]['NAMAMENURECIPE']+'</div>'+
+                            '<div id="countdown'+result['datameja'][i]['nomormeja']+ctr+'" class="col m2">0:0</div>'+
+                            '</div>'+
+                            '<div class="collIsi collapsible-body">'+
+                            '<ul id="listModif'+result['datameja'][i]['URUTAN']+result['datameja'][i]['nomormeja']+'1" class="collection white font_cardlist  scrollable_list"></ul>'+
+                            '</div>'+
+                            '<div class="progress "><div id="pB'+result['datameja'][i]['nomormeja']+ctr+'"  class="determinate" style="width:0%"></div></div></li>');
+                            ctr = ctr+1;   
+                        }
+                       if(result['datameja'][i]['STATUS']==1){
+                            var sisawaktu = hitungSisawaktu(result['datameja'][i]['JAMTARGET'],result['datameja'][i]['JAMFINISH']);
+                            $('#list'+result['datameja'][i]['nomormeja']+'3').append('<li class="collection-item "><div class="collIsi collapsible-header" style="padding:2px;"><div class="col m9"><strike>'+result['datameja'][i]['NAMAMENURECIPE']+'</strike></div><div class="col m2">'+sisawaktu+'</div></div>'+
+                            '<div class="collIsi collapsible-body">'+
+                            '<ul id="listModif'+result['datameja'][i]['URUTAN']+result['datameja'][i]['nomormeja']+'3" class="collection white font_cardlist  scrollable_list"></ul>'+
+                            '</div>'+
+                            '</li>');
+                            $('#list'+result['datameja'][i]['nomormeja']+'2').append('<li class="collection-item "><div class="collIsi collapsible-header" style="padding:2px;"><div class="col m9"><strike>'+result['datameja'][i]['NAMAMENURECIPE']+'</strike></div><div class="col m2">'+sisawaktu+'</div></div>'+
+                            '<div class="collIsi collapsible-body">'+
+                            '<ul id="listModif'+result['datameja'][i]['URUTAN']+result['datameja'][i]['nomormeja']+'2" class="collection white font_cardlist  scrollable_list"></ul>'+
+                            '</div>'+
+                            '</li>');
+                           tmpfinish = tmpfinish+1;
+                        }
+                    }else{
+                        var temp=result['datameja'][i]['NAMAMENURECIPE'].replace(/\s/g, '');
+                        //alert(temp);
+                        $('#listModif'+result['datameja'][i]['URUTANCHECKER']+result['datameja'][i]['nomormeja']+'1').append('<li class="collection-item "><span>'+
+                        temp+
+                        '</span></li>');
+                        
+                        $('#listModif'+result['datameja'][i]['URUTANCHECKER']+result['datameja'][i]['nomormeja']+'3').append('<li class="collection-item "><span>'+
+                        temp+
+                        '</span></li>');
+                        
+                        $('#listModif'+result['datameja'][i]['URUTANCHECKER']+result['datameja'][i]['nomormeja']+'2').append('<li class="collection-item "><span>'+
+                        temp+
+                        '</span></li>');
+                        //alert(result['datameja'][i]['NAMAMENURECIPE']+"urutan "+result['datameja'][i]['URUTANCHECKER']);
                     }
-                    
                             tmptotal = tmptotal+1;
+                    
+                    $('.collapsible').collapsible();
                     $tabs.tabs().tabs('select_tab', 'test'+result['datameja'][i]['nomormeja']+'2');
                     $tabs.tabs().tabs('select_tab', 'test'+result['datameja'][i]['nomormeja']+'3');
                     $tabs.tabs().tabs('select_tab', 'test'+result['datameja'][i]['nomormeja']+'1');
@@ -601,36 +693,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 $('#listmodal2').empty();
                 totaldatamodal=result.length;
                 ctr2=1;
+                
+                var temp;
                 for(i=0;i<result.length;i++)
                 {
                     var str="";
-                    if(result[i]["STATUS"]!=1)
-                    {
-                        str = '<li class="collection-item ">'
-                                +'<div class="row">'
-                                    +'<div class="col s8 menu modal-trigger waves-effe" name="'+result[i]['NAMAMENURECIPE']+"_"+result[i]['KODEMENURECIPE']+'" href="#modal2">'+result[i]['NAMAMENURECIPE']+'</div>'
-                                    +'<div id="countdownM'+myElements+ctr2+'" class="col s2">00:00</div>'
-                                    +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="f_'+result[i]['KODETRANS']+'_'+result[i]['KODELOKASI']+'_'+result[i]['TGLOMZET']+'_'+result[i]['URUTAN']+'" /><label for="cb'+i+'"></label></div>'
-                                +'</div>'
-                                +'<div class="col m2"></div>'
-                                +'<div class="progress"><div id="pBM'+myElements+ctr2+'" class="determinate" style="width:'+
-                    document.getElementById("pB"+myElements+ctr2).style.width+'"></div></div>'
-                            +'</li>'; 
-                        $('#listmodal').append(str);
-                        ctr2 = ctr2+1;
-                    }
-                    else
-                    {
-                        var sisawaktu = hitungSisawaktu(result[i]['JAMTARGET'],result[i]['JAMFINISH']);
-                         str = '<li class="collection-item ">'
-                                +'<div class="row">'
-                                    +'<div class="col s8">'+result[i]['NAMAMENURECIPE']+'</div>'
-                                    +'<div class="col s2">'+sisawaktu+'</div>'
-                                    +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="u_'+result[i]['KODETRANS']+'_'+result[i]['KODELOKASI']+'_'+result[i]['TGLOMZET']+'_'+result[i]['URUTAN']+'"/><label for="cb'+i+'"></label></div>'
-                                +'</div>'
-                                +'<div class="col m2"></div>'
-                            +'</li>'; 
-                        $('#listmodal2').append(str);
+                    var urutanctr=1;
+                        if(result[i]["URUTANCHECKER"]==-1){
+                            temp=result[i]['NAMAMENURECIPE'];
+                            while(i+urutanctr<result.length){
+                                //alert(result[i+urutanctr]["URUTAN"]+result[i+urutanctr]['NAMAMENURECIPE']+result[i+urutanctr]["URUTANCHECKER"]);
+                                if(result[i+urutanctr]["KODETRANS"]==result[i]["KODETRANS"]){
+                                    if(result[i+urutanctr]["URUTANCHECKER"]==result[i]["URUTAN"])
+                                            temp=temp+"+"+result[i+urutanctr]['NAMAMENURECIPE'];
+                                }else{
+                                    urutanctr=1;
+                                    break
+                                }
+                                urutanctr++;
+                            }
+                            if(result[i]["STATUS"]!=1)
+                            {
+
+                                str = '<li class="collection-item ">'
+                                        +'<div class="row">'
+                                            +'<div class="col s8 menu modal-trigger waves-effe" name="'+result[i]['NAMAMENURECIPE']+"_"+result[i]['KODEMENURECIPE']+'" href="#modal2">'+temp+'</div>'
+                                            +'<div id="countdownM'+myElements+ctr2+'" class="col s2">00:00</div>'
+                                            +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="f_'+result[i]['KODETRANS']+'_'+result[i]['KODELOKASI']+'_'+result[i]['TGLOMZET']+'_'+result[i]['URUTAN']+'" /><label for="cb'+i+'"></label></div>'
+                                        +'</div>'
+                                        +'<div class="col m2"></div>'
+                                        +'<div class="progress"><div id="pBM'+myElements+ctr2+'" class="determinate" style="width:'+
+                            document.getElementById("pB"+myElements+ctr2).style.width+'"></div></div>'
+                                    +'</li>'; 
+                                $('#listmodal').append(str);
+                                ctr2 = ctr2+1;
+                            }
+                            else
+                            {
+                                var sisawaktu = hitungSisawaktu(result[i]['JAMTARGET'],result[i]['JAMFINISH']);
+                                 str = '<li class="collection-item ">'
+                                        +'<div class="row">'
+                                            +'<div class="col s8">'+temp+'</div>'
+                                            +'<div class="col s2">'+sisawaktu+'</div>'
+                                            +'<div class="col s2"><input type="checkbox" class="filled-in" id="cb'+i+'" name="u_'+result[i]['KODETRANS']+'_'+result[i]['KODELOKASI']+'_'+result[i]['TGLOMZET']+'_'+result[i]['URUTAN']+'"/><label for="cb'+i+'"></label></div>'
+                                        +'</div>'
+                                        +'<div class="col m2"></div>'
+                                    +'</li>'; 
+                                $('#listmodal2').append(str);
+                            }
                     }
                 }
                 
@@ -721,6 +831,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
         }
        hasil = hasil.substring(0,hasil.length-1);
+       //alert("submitmodal-"+hasil);
         $.ajax({
 			type:"post", 
             dataType:"json",
