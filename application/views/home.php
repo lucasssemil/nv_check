@@ -175,8 +175,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 
 <div id="modal2" class="modal modal-fixed-footer" style="width: 25%;">
-	<div class="modal-content">
-		<div class="row">
+	<div class="modal-content" >
+		<div class="row" style="position:sticky;">
 			<div id="judulmenu" class="col m12 modal-trigger waves-effect waves-light" style="font-size:24px; font-family:mythirdfont; text-align:center">
                 NAMA MENU
 			</div>
@@ -196,7 +196,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
         </div>
         <div class="col m12" style="margin: 0px; padding:0px;">
-			<ul id="listmodal21" class="collection white font_cardlist scrollable_list" style="font-family:mysecondfont;">
+			<ul id="listmodal21" class="collection white font_cardlist scrollable_list" style="font-family:mysecondfont; overflow-y:auto;">
 				
 			</ul>
 		</div>
