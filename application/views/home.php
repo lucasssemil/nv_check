@@ -1,4 +1,5 @@
 <?php
+$this->load->library('session');
 defined('BASEPATH') OR exit('No direct script access allowed');
 ?><!DOCTYPE html>
 <html lang="en">
@@ -118,7 +119,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             
             <a id="btnReport1" class="waves-effect waves-light btn-large col s12" style="margin-top:10%;"><i class="material-icons left">book</i>LAPORAN REKAP MENU</a>
             <a id="btnReport2" class="waves-effect waves-light btn-large col s12" style="margin-top:10%;"><i class="material-icons left">book</i>LAPORAN MENU</a>
-			
+            <a id="btnReport3" class="waves-effect waves-light btn-large col s12" style="margin-top:10%;"><i class="material-icons left">book</i>LAPORAN HARIAN</a>
+            <a id="btnReport4" class="waves-effect waves-light btn-large col s12" style="margin-top:10%;"><i class="material-icons left">book</i>LAPORAN RESTORAN</a>
+				<label>KODE LOKASI : <?php echo $this->session->userdata('kodelokasi'); ?></label>
+				<select id="h_kodelokasi" style="display:inline" onchange="myFunction()">
+  				<option value="" disabled selected>Pilih Lokasi</option>
+					<?php
+						 foreach($kodelokasi as $t)
+						{
+							echo '<option value="'.$t["KODELOKASI"].'">'.$t["KODELOKASI"].'</option>';
+						}
+					?>
+				</select>
 		</div>
 		<div id="checker_container" class="col m10" style="margin-left:16%;">
             <div id="loading" style="margin-top:15%; margin-left:35%;  position:fixed; z-index:-1;">
@@ -252,7 +264,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
 	</div>
 </div>  
-    
+
+<!--modal 5 report 3-->
+    <div id="modal5" class="modal modal-fixed-footer" style="width: 50%; overflow:auto;">
+	<div class="modal-content">
+        <div class="row">
+			<div class="col m12 modal-trigger waves-effect waves-light" style="font-size:24px; font-family:mythirdfont; text-align:center">
+                 LAPORAN HARIAN
+			</div>
+		</div>
+        <div class="col m12" style="margin: 0px; padding:0px;">
+            <div class="row" style="font-family:mythirdfont;">
+                <div class="col s2">TANGGAL</div>
+                <div class="col s3">KODE TRANSAKSI</div>
+                <div class="col s2">TABLE</div>
+                <div class="col s4">NAMA MENU</div>
+            </div>
+        </div>
+		<div class="col m12" style="margin: 0px; padding:0px;">
+            <ul id="listmodal51" class="collection white font_cardlist scrollable_list" style="font-family:mysecondfont;">
+				
+			</ul>
+        </div>
+	</div>
+    </div>  
+<!-- modal 6 report 4-->
+        <div id="modal6" class="modal modal-fixed-footer" style="width: 50%; overflow:auto;">
+	<div class="modal-content">
+        <div class="row">
+			<div class="col m12 modal-trigger waves-effect waves-light" style="font-size:24px; font-family:mythirdfont; text-align:center">
+                 LAPORAN RESTORAN
+			</div>
+		</div>
+        <div class="col m12" style="margin: 0px; padding:0px;">
+            <div class="row" style="font-family:mythirdfont;">
+                <div class="col s3">KODE LOKASI</div>
+                <div class="col s3">NOMOR MEJA</div>
+                <div class="col s6">STATUS</div>
+            </div>
+        </div>
+		<div class="col m12" style="margin: 0px; padding:0px;">
+            <ul id="listmodal61" class="collection white font_cardlist scrollable_list" style="font-family:mysecondfont;">
+				
+			</ul>
+        </div>
+	</div>
+    </div>  
 <script>
 
 	//Define websocket server
@@ -865,6 +922,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         get_report_data2();
         $("#modal4").modal("open");
     }); 
+    $(document).on("click", "#btnReport3", function(){ 
+        $('#listmodal51').empty();
+        get_report_data3();
+        $("#modal5").modal("open");
+    });  
+    $(document).on("click", "#btnReport4", function(){ 
+        $('#listmodal61').empty();
+        get_report_data4();
+        $("#modal6").modal("open");
+    }); 
     function get_report_data1(){
         $.ajax({
 		type:"GET", 
@@ -933,6 +1000,132 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
        });
     }
+    
+        //modal 5 report 3
+    function get_report_data3(){
+        $.ajax({
+		type:"GET", 
+		dataType: 'json',
+		url: "<?php echo site_url(); ?>" + "/Controller/getReport3/", 
+		data:{ "mode":"resep" },                                     
+		success :function(result){
+            var tempnama= "";
+            var tempkode= "";
+            var menu="";
+            var ctr=0;
+            var warna="yellow";
+            var tempmenu="";
+            for(i=0;i<result.length;i++)
+            {
+                var nama="";
+                var kode="";
+                if(tempnama!=result[i]['TGLOMZET'])
+                {
+                    if(ctr%2==0)
+                    {
+                        warna="lightcyan";
+                    }
+                    else
+                    {
+                        warna="white";        
+                    }
+                    ctr= ctr+1;
+                    tempnama=result[i]['TGLOMZET'];
+                    nama = result[i]['TGLOMZET'];
+                }
+                if(tempkode!=result[i]['KODETRANS']){
+                    tempkode=result[i]['KODETRANS'];
+                    kode = result[i]['KODETRANS'];
+                    tempmenu=result[i]['NAMAMENURECIPE'];
+                    if(ctr==1)
+                        menu=result[i]['NAMAMENURECIPE'];
+                }else{
+                    menu=menu+", "+result[i]['NAMAMENURECIPE'];
+                    tempmenu=tempmenu+", "+result[i]['NAMAMENURECIPE'];
+                }
+                if(tempmenu!=menu ){
+                var str ='<li class="collection-item" style="background-color:'+warna+';">'
+                             +'<div class="row" >'
+                             +'<div class="col s2">'+nama+'</div>'
+                             +'<div class="col s3">'+kode+'</div>'
+                             +'<div class="col s2">'+result[i]['NOMORMEJA']+'</div>'
+                             +'<div class="col s4">'+menu+'</div>'
+                         +'</div>';
+                        +'</li>'; 
+                $("#listmodal51").append(str);
+                    menu=tempmenu;
+                }
+
+            }
+        },
+            error: function(msg){
+				alert('Reload Modal 5 Error');
+			}
+       });
+    }
+         
+         
+    function get_report_data4(){
+        $.ajax({
+		type:"GET", 
+		dataType: 'json',
+		url: "<?php echo site_url(); ?>" + "/Controller/getReport4/", 
+		data:{ "mode":"resep" },                                     
+		success :function(result){
+            var tempnama= "";
+            var tmpkodelokasi="";
+            var ctr=0;
+            var warna="white";
+            for(i=0;i<result.length;i++)
+            {
+                //alert(result[i]['NOMORMEJA']);
+                var selesai=0;
+                var belum =0;
+                for(j=0;j<result[i]['STATUS'].length;j++)
+                {
+                    if(result[i]['STATUS'][j]['STATUS']==1)
+                    {
+                        selesai = selesai+1;        
+                    }
+                    else
+                    {
+                        belum = belum+1;        
+                    }        
+                }
+                if(tmpkodelokasi!=result[i]['KODELOKASI'])
+                {
+                        tmpkodelokasi=result[i]['KODELOKASI'];
+                }
+                else
+                {
+                    result[i]['KODELOKASI']="";        
+                }
+                var str ='<li class="collection-item" style="background-color:'+warna+';">'
+                             +'<div class="row">'
+                             +'<div class="col s3">'+result[i]['KODELOKASI']+'</div>'
+                             +'<div class="col s3">'+result[i]['NOMORMEJA']+'</div>'
+                             +'<div class="col s6">Selesai : '+selesai+'</div>'
+                         +'</div>';
+                        +'</li>'; 
+                $("#listmodal61").append(str);
+                
+                str ='<li class="collection-item" style="background-color:'+warna+';">'
+                             +'<div class="row">'
+                             +'<div class="col s3"></div>'
+                             +'<div class="col s3"></div>'
+                             +'<div class="col s6">Belum : '+belum+'</div>'
+                         +'</div>';
+                        +'</li>';
+                $("#listmodal61").append(str);
+            }
+        },
+            error: function(msg){
+				alert('Reload Modal 6 Error');
+			}
+       });
+    }
+         
+         
     //modal 2
     $(document).on("click", ".menu", function () {
        
@@ -1041,13 +1234,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
        
    });
 
-         
 	$('ul.tabs').tabs({
 		swipeable : false
 	});
 		reloadalldata();
 	// //$('ul.tabs').tabs('select_tab', 'tab_id');
+		 
  });
+</script>
+<script>
+function myFunction() {
+	var kodelokasi = document.getElementById('h_kodelokasi').value;
+	alert(kodelokasi);
+	window.location = "<?php echo base_url('index.php/Controller/changelokasi/') ?>"+kodelokasi;
+}
 </script>
 </body>
 </html>

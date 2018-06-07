@@ -24,6 +24,15 @@ class Controller extends CI_Controller {
 		$this->load->model('checker_model');
         $this->load->helper('array');
         $this->load->library('table');
+		$this->load->helper('url');
+		$this->load->library('session');
+	}
+	
+	public function changelokasi($kodelokasi)
+	{
+		$this->session->set_userdata('kodelokasi',$kodelokasi);
+		redirect("Controller/index");
+		redirect("Controller/get_table");
 	}
 	
 	public function index()
@@ -31,22 +40,70 @@ class Controller extends CI_Controller {
 		$this->load->helper('url');
         $data["totalorder"] = $this->checker_model->getCountOrder()[0]['total'];
         $data["totalfinishorder"] = $this->checker_model->getCountFinishOrder()[0]['total'];
+		$data['kodelokasi'] = $this->checker_model->get_kodelokasi();
         //print_r($data["durasimakanan"]);
+        
         $this->load->view('home',$data);
 		//$this->load->view('mejakotak');
 		//$data = $this->checker_model->get_table();
 	}
-	
+	//buat demo start
+    public function inserttorder()
+    {
+        $kodetrans = $this->input->post('kodetrans');
+        $nomeja = $this->input->post('nomeja');
+        $totalcust = $this->input->post('totalcustomer');
+        $this->checker_model->inserttorder($kodetrans,$nomeja,$totalcust);
+        echo "<script> alert('INSERT BERHASIL')</script>";
+        redirect("Controller/cashier");
+    }
+    
+    public function inserttorderdtl()
+    {
+
+        $kodetrans = $this->input->post('kodetrans');
+        $kodemenurecipe = $this->input->post('makanan');
+        $order = $this->checker_model->getorder($kodetrans);
+        $urutan = $this->checker_model->geturutan();
+        if($urutan[0]["urutan"]==null)
+        {
+            $urutan[0]["urutan"]=0;
+        }
+        $this->checker_model->inserttorderdtl($order[0]['KODELOKASI'],$kodetrans,$order[0]['TGLTRANS'],$urutan[0]["urutan"],$kodemenurecipe);
+        echo "<script> alert('INSERT BERHASIL')</script>";
+        redirect("Controller/cashier");
+    }
+    
+    public function insertmodifier()
+    {
+        $nourut = $this->input->post('m_urutan');
+        $data = explode("-",$nourut);//$data[0]=noheader,$data[1]=KODETRANS
+        $kodemenurecipe = $this->input->post('kodemodifier');
+        $order = $this->checker_model->getorder($data[1]);
+        $urutan = $this->checker_model->geturutan();
+        $this->checker_model->insertmodifier($order[0]['KODELOKASI'],$order[0]['KODETRANS'],$order[0]['TGLTRANS'],$urutan[0]["urutan"],$kodemenurecipe,$data[0]);
+        echo "<script> alert('INSERT BERHASIL')</script>";
+        redirect("Controller/cashier");
+     
+    }
+    
 	public function cashier()
 	{
+        $data["torder"] = $this->checker_model->gettorder();
+        $data["torderdtl"] = $this->checker_model->gettorderdtl();
+        $data["makanan"]= $this->checker_model->getmakanan();
+        $data["modifier"]= $this->checker_model->getmodifier();
+        $data["ordermodifier"]= $this->checker_model->getordermodif();
 		$this->load->helper('url');
-		$this->load->view('cashier');
+		$this->load->view('cashier',$data);
 	}
 	
+    
+    //buat demo end
 	public function checker()
 	{
 		$this->load->helper('url');
-		$this->load->view('checker_testjson');
+		$this->load->view('checker');
 	}
 	
     public function insert_torder()
@@ -57,16 +114,13 @@ class Controller extends CI_Controller {
 	public function insert_table()
 	{	
 		// $this->input->post("")
-		$kodetrans = $this->input->post("kodetrans");
-		$tglomset = $this->input->post("tglomset");
-		$nomormeja = $this->input->post("nomormeja");
-		$this->checker_model->insert_table($kodetrans, $tglomset, $nomormeja);
 	}
 	
 	public function get_table(){
 		$data['datameja'] = $this->checker_model->get_table();
         $data['dataheader'] = $this->checker_model->getDataHeader();
         $data['totalorang'] = $this->checker_model->get_jumlahorang();
+		$data['kodelokasi'] = $this->checker_model->get_kodelokasi();
 		echo json_encode($data);
         //echo "sfsdf";
         //$json = json_decode($data, true);
@@ -166,6 +220,25 @@ class Controller extends CI_Controller {
     public function getReport2()
     {
         $data = $this->checker_model->getReport2();
+        echo json_encode($data);
+    }
+    
+    public function getReport3()
+    {
+        $data = $this->checker_model->getReport3();
+        for($i=0;$i<count($data);$i++){
+            //$data["namamenu"] = $this->checker_model->getNamaMenu($data[$i]["KODETRANS"]);
+        }
+        echo json_encode($data);
+    }
+    
+    public function getReport4()
+    {
+        $data = $this->checker_model->getReport4_1();
+        for($i=0;$i<count($data);$i++)
+        {
+            $data[$i]["STATUS"] = $this->checker_model->getReport4_2($data[$i]["KODELOKASI"],$data[$i]["KODETRANS"]);
+        }
         echo json_encode($data);
     }
 }

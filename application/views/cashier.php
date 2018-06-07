@@ -30,105 +30,81 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		  margin-bottom: 20px;
 		  margin-top: 5px;
 		}
+        .center {
+            margin: auto;
+            width: 50%;
+            padding: 10px;
+        }
 		
 	</style>
 	
 </head>
 <body>
-
+<h1 style="text-align:center;">CASHIER</h1>
 <div id="container">
-	<div class="row">
-	<form class="col s4" id="form_input">
-        <div class="row">
-			<div class="input-field col s12">
-				<input id="kodetrans" type="text" class="validate">
-				<label for="kodetrans">Kode Trans</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="input-field col s12">
-				<input id="tglomset" type="text" class="validate">
-				<label for="tglomset">Tanggal Omset</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="input-field col s12">
-				<input id="nomormeja" type="text" class="validate">
-				<label for="nomormeja">Nomor Meja</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="input-field col s4">
-				<input id="kodemenurecipe" type="text" class="validate">
-				<label for="kodemenurecipe">Kode Menu Recipe</label>
-			</div>
-			<div class="input-field col s8">
-				<input id="namamenurecipe" type="text" class="validate">
-				<label for="namamenurecipe">Nama Menu Recipe</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="input-field col s12">
-				<input id="jumlah" type="text" class="validate">
-				<label for="jumlah">Jumlah</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="input-field col s12">
-				<input id="harga" type="text" class="validate">
-				<label for="harga">harga</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="input-field col s4">
-				<input id="kodedetail" type="text" class="validate">
-				<label for="kodedetail">Kode Detail</label>
-			</div>
-			<div class="input-field col s8">
-				<input id="namadetail" type="text" class="validate">
-				<label for="namadetail">Nama Detail</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="input-field col s6">
-				<input id="urutanheader" type="text" class="validate">
-				<label for="urutanheader">Urutan Header</label>
-			</div>
-			<div class="input-field col s6">
-				<input id="urutan" type="text" class="validate">
-				<label for="urutan">Urutan</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="input-field col s4">
-				<input id="jamorder" type="text" class="validate">
-				<label for="jamorder">Jam Order</label>
-			</div>
-			<div class="input-field col s4">
-				<input id="jamtarget" type="text" class="validate">
-				<label for="jamtarget">Jam Target</label>
-			</div>
-			<div class="input-field col s4">
-				<input id="jamfinish" type="text" class="validate">
-				<label for="jamfinish">Jam Finish</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="input-field col s12">
-				<input id="userorder" type="text" class="validate">
-				<label for="userorder">User Order</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="input-field col s12">
-				<input id="userchecker" type="text" class="validate">
-				<label for="userchecker">User Checker</label>
-			</div>
-		</div>
+	<div class="row col s12">
+	<form class="col s4" action="<?php echo base_url('index.php/Controller/inserttorder') ?>" method="POST"> 
+        <div class="center"><h2>TORDER</h2></div>
+        <div>
+            KODETRANS: <input type="text" id="kt" name="kodetrans"><br>
+            NOMEJA: <input type="text" name="nomeja"><br>
+            TOTAL CUSTOMER: <input type="text" name="totalcustomer"><br>
+        </div>
+		<input type="submit" class="btn waves-effect waves-light" name="insertdtl" value="INSERT TORDER">
+	</form>
+  <form class="col s4" action="<?php echo base_url('index.php/Controller/inserttorderdtl') ?>" method="POST"> 
+        <div class="center"><h2>TORDERDTL</h2></div>
+        <div>
+            KODETRANS:
+            <select name="kodetrans" style="display:inline">
+                <?php
+                    foreach($torder as $t)
+                    {
+                    
+                        echo '<option value="'.$t["KODETRANS"].'">'.$t["KODETRANS"].'</option>';
+                    }
+                ?>
+              </select>
+            NAMAMAKANAN:
+            <select name="makanan" style="display:inline">
+                    <?php
+                    foreach($makanan as $t)
+                    {
+                    
+                        echo '<option value="'.$t["kodemenurecipe"].'">'.$t["namamenurecipe"].'</option>';
+                    }
+                ?>
+            </select>
+        </div>
+		<input type="submit" class="btn waves-effect waves-light" name="insertdtl" value="INSERT TORDERDTL">
 		
-		<a class="btn waves-effect waves-light" id="btn_submit" name="btn_submit">Submit
-			<i class="material-icons right">send</i>
-		</a>
+	</form>
+    <form class="col s4" action="<?php echo base_url('index.php/Controller/insertmodifier') ?>" method="POST"> 
+        <div class="center"><h2>MODIFIER</h2></div>
+        <div>
+            KODETRANS:
+            <select name="m_urutan" style="display:inline" size="1">
+                <?php
+                    foreach($ordermodifier as $t)
+                    {
+                    
+                        echo '<option value="'.$t["URUTAN"].'-'.$t["KODETRANS"].'">'.$t["KODETRANS"].' - '.$t["KODEMENURECIPE"].'</option>';
+                    }
+                ?>
+              </select>
+            MODIFIER:
+            <select name="kodemodifier" style="display:inline">
+                    <?php
+                    foreach($modifier as $t)
+                    {
+                    
+                        echo '<option value="'.$t["kodemenurecipe"].'">'.$t["namamenurecipe"].'</option>';
+                    }
+                ?>
+            </select>
+        </div>
+		<input type="submit" class="btn waves-effect waves-light" name="insertdtl" value="INSERT MODIFIER">
+		
 	</form>
 	</div>
 </div>
@@ -146,26 +122,12 @@ $(document).ready(function(){
 		swipeable : false
 	  
 	});
-	$("#btn_submit").click(function() {
+	$(".btn").click(function() {
 		//$( "#formemployee" ).submit();
 		var kodetrans = $("#kodetrans").val();
 		var tglomset = $("#tglomset").val();
 		var nomormeja = $("#nomormeja").val();
 
-		$.ajax({
-			type:"POST",
-			url:"<?php echo site_url(); ?>" + "/Controller/insert_table",
-			data:{
-				"kodetrans":kodetrans,
-				"tglomset": tglomset,
-				"nomormeja":nomormeja
-			},
-			success: function(result){
-				Server.send( 'message', 'grid' );
-				alert('Data Saved');
-				//swal('Success', "Add Employee success", 'success');
-			}
-		});
 	});
 	// //$('ul.tabs').tabs('select_tab', 'tab_id');
 });
